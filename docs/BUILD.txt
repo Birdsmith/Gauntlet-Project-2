@@ -1,0 +1,171 @@
+2025-01-21T20:52:20.129Z [INFO]: # Cloning repository: git@github.com:Birdsmith/Gauntlet-Project-2.git
+2025-01-21T20:52:21.000Z [INFO]: 
+2025-01-21T20:52:21.001Z [INFO]: Cloning into 'Gauntlet-Project-2'...
+2025-01-21T20:52:21.001Z [INFO]: # Switching to commit: 2e362a0ef63fa85ce32f82d004a30270c41d2e45
+2025-01-21T20:52:21.017Z [INFO]: Note: switching to '2e362a0ef63fa85ce32f82d004a30270c41d2e45'.
+                                 You are in 'detached HEAD' state. You can look around, make experimental
+                                 changes and commit them, and you can discard any commits you make in this
+                                 state without impacting any branches by switching back to a branch.
+                                 If you want to create a new branch to retain commits you create, you may
+                                 do so (now or later) by using -c with the switch command. Example:
+                                 git switch -c <new-branch-name>
+                                 Or undo this operation with:
+                                 git switch -
+                                 Turn off this advice by setting config variable advice.detachedHead to false
+                                 HEAD is now at 2e362a0 fix: configure Next.js standalone output and update build artifacts
+2025-01-21T20:52:21.056Z [INFO]: Successfully cleaned up Git credentials
+2025-01-21T20:52:21.056Z [INFO]: # Checking for Git submodules at: /codebuild/output/src996446219/src/Gauntlet-Project-2/.gitmodules
+2025-01-21T20:52:21.064Z [INFO]: # Retrieving environment cache...
+2025-01-21T20:52:21.098Z [WARNING]: ! Unable to write cache: {"code":"ERR_BAD_REQUEST","message":"Request failed with status code 404"})}
+2025-01-21T20:52:21.099Z [INFO]: ---- Setting Up SSM Secrets ----
+2025-01-21T20:52:21.099Z [INFO]: SSM params {"Path":"/amplify/dc5lptlmhukoq/main/","WithDecryption":true}
+2025-01-21T20:52:21.148Z [WARNING]: !Failed to set up process.env.secrets
+2025-01-21T20:52:21.656Z [INFO]: # No package override configuration found.
+2025-01-21T20:52:21.660Z [INFO]: # Retrieving cache...
+2025-01-21T20:53:32.887Z [INFO]: # Extracting cache...
+2025-01-21T20:54:34.305Z [INFO]: # Extraction completed
+2025-01-21T20:54:34.727Z [INFO]: # Retrieved cache
+2025-01-21T20:54:39.363Z [INFO]: ## Starting Backend Build
+                                 ## Checking for associated backend environment...
+                                 ## No backend environment association found, continuing...
+                                 ## Completed Backend Build
+2025-01-21T20:54:39.368Z [INFO]: {"backendDuration": 0}
+                                 ## Starting Frontend Build
+                                 # Starting phase: preBuild
+                                 # Executing command: npm install -g pnpm
+2025-01-21T20:54:55.562Z [INFO]: added 1 package in 6s
+2025-01-21T20:54:55.566Z [INFO]: 1 package is looking for funding
+                                 run `npm fund` for details
+2025-01-21T20:54:55.575Z [INFO]: # Executing command: cd ../..
+2025-01-21T20:54:55.578Z [INFO]: # Executing command: pnpm install
+2025-01-21T20:54:56.126Z [INFO]: Scope: all 5 workspace projects
+2025-01-21T20:54:56.295Z [INFO]: Recreating /codebuild/output/src996446219/src/Gauntlet-Project-2/node_modules
+2025-01-21T20:55:03.942Z [INFO]: Lockfile is up to date, resolution step is skipped
+2025-01-21T20:55:03.991Z [INFO]: Progress: resolved 1, reused 0, downloaded 0, added 0
+2025-01-21T20:55:04.102Z [INFO]: Packages: +456
+                                 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+2025-01-21T20:55:04.993Z [INFO]: Progress: resolved 456, reused 0, downloaded 143, added 136
+2025-01-21T20:55:05.996Z [INFO]: Progress: resolved 456, reused 0, downloaded 172, added 166
+2025-01-21T20:55:06.996Z [INFO]: Progress: resolved 456, reused 0, downloaded 233, added 220
+2025-01-21T20:55:07.998Z [INFO]: Progress: resolved 456, reused 0, downloaded 275, added 266
+2025-01-21T20:55:09.014Z [INFO]: Progress: resolved 456, reused 0, downloaded 406, added 401
+2025-01-21T20:55:09.145Z [INFO]: Progress: resolved 456, reused 0, downloaded 456, added 456, done
+2025-01-21T20:55:09.318Z [INFO]: .../esbuild@0.24.2/node_modules/esbuild postinstall$ node install.js
+2025-01-21T20:55:09.393Z [INFO]: .../esbuild@0.24.2/node_modules/esbuild postinstall: Done
+2025-01-21T20:55:10.766Z [INFO]: devDependencies:
+                                 + @typescript-eslint/eslint-plugin 6.21.0
+                                 + @typescript-eslint/parser 6.21.0
+                                 + eslint 8.57.1
+                                 + eslint-config-prettier 9.1.0
+                                 + eslint-plugin-prettier 5.2.3
+                                 + prettier 3.4.2
+                                 + turbo 1.13.4
+                                 + typescript 5.7.3
+2025-01-21T20:55:10.797Z [INFO]: Done in 15.1s
+2025-01-21T20:55:10.856Z [INFO]: # Executing command: pnpm build --filter @autocrm/common
+2025-01-21T20:55:11.300Z [INFO]: > autocrm@0.1.0 build /codebuild/output/src996446219/src/Gauntlet-Project-2
+                                 > turbo run build "--filter" "@autocrm/common"
+2025-01-21T20:55:11.357Z [WARNING]: Attention:
+                                    Turborepo now collects completely anonymous telemetry regarding usage.
+                                    This information is used to shape the Turborepo roadmap and prioritize features.
+                                    You can learn more, including how to opt-out if you'd not like to participate in this anonymous program, by visiting the following URL:
+                                    https://turbo.build/repo/docs/telemetry
+2025-01-21T20:55:11.396Z [INFO]: • Packages in scope: @autocrm/common
+                                 • Running build in 1 packages
+                                 • Remote caching disabled
+2025-01-21T20:55:11.445Z [INFO]: @autocrm/common:build: cache miss, executing 1b99f66f2c4f473f
+2025-01-21T20:55:11.873Z [INFO]: @autocrm/common:build:
+                                 @autocrm/common:build: > @autocrm/common@0.0.1 build /codebuild/output/src996446219/src/Gauntlet-Project-2/packages/common
+                                 @autocrm/common:build: > tsup
+                                 @autocrm/common:build:
+2025-01-21T20:55:12.510Z [INFO]: @autocrm/common:build: CLI Building entry: src/index.ts
+2025-01-21T20:55:12.510Z [INFO]: @autocrm/common:build: CLI Using tsconfig: tsconfig.json
+2025-01-21T20:55:12.511Z [INFO]: @autocrm/common:build: CLI tsup v8.3.5
+                                 @autocrm/common:build: CLI Using tsup config: /codebuild/output/src996446219/src/Gauntlet-Project-2/packages/common/tsup.config.ts
+2025-01-21T20:55:12.515Z [INFO]: @autocrm/common:build: CLI Target: es2017
+2025-01-21T20:55:12.516Z [INFO]: @autocrm/common:build: CLI Cleaning output folder
+2025-01-21T20:55:12.517Z [INFO]: @autocrm/common:build: ESM Build start
+2025-01-21T20:55:12.518Z [INFO]: @autocrm/common:build: CJS Build start
+2025-01-21T20:55:12.688Z [INFO]: @autocrm/common:build: CJS dist/index.js 8.77 KB
+2025-01-21T20:55:12.688Z [INFO]: @autocrm/common:build: CJS ⚡️ Build success in 171ms
+                                 @autocrm/common:build: ESM dist/index.mjs 8.12 KB
+                                 @autocrm/common:build: ESM ⚡️ Build success in 171ms
+2025-01-21T20:55:12.830Z [INFO]: @autocrm/common:build: DTS Build start
+2025-01-21T20:55:15.697Z [INFO]: @autocrm/common:build: DTS ⚡️ Build success in 2868ms
+2025-01-21T20:55:15.704Z [INFO]: @autocrm/common:build: DTS dist/index.d.mts 4.75 KB
+                                 @autocrm/common:build: DTS dist/index.d.ts  4.75 KB
+2025-01-21T20:55:15.740Z [INFO]: Tasks:    1 successful, 1 total
+                                 Cached:    0 cached, 1 total
+                                 Time:    4.379s
+2025-01-21T20:55:15.926Z [INFO]: # Executing command: cd packages/customer-portal
+2025-01-21T20:55:15.935Z [INFO]: # Executing command: pnpm install
+2025-01-21T20:55:16.405Z [INFO]: Scope: all 5 workspace projects
+2025-01-21T20:55:17.197Z [INFO]: 
+2025-01-21T20:55:17.228Z [INFO]: Done in 1.2s
+2025-01-21T20:55:17.244Z [INFO]: # Completed phase: preBuild
+                                 # Starting phase: build
+2025-01-21T20:55:17.245Z [INFO]: # Executing command: env | grep -e NEXT_PUBLIC_ >> .env.production
+2025-01-21T20:55:17.246Z [INFO]: # Executing command: pnpm build
+2025-01-21T20:55:17.716Z [INFO]: > @autocrm/customer-portal@0.0.1 build /codebuild/output/src996446219/src/Gauntlet-Project-2/packages/customer-portal
+                                 > next build
+2025-01-21T20:55:18.324Z [WARNING]: ⚠ Invalid next.config.js options detected:
+2025-01-21T20:55:18.324Z [WARNING]: ⚠     Expected object, received boolean at "experimental.serverActions"
+2025-01-21T20:55:18.324Z [WARNING]: ⚠ See more info here: https://nextjs.org/docs/messages/invalid-next-config
+2025-01-21T20:55:18.325Z [WARNING]: ⚠ Server Actions are available by default now, `experimental.serverActions` option can be safely removed.
+2025-01-21T20:55:18.330Z [INFO]: ⚠ No build cache found. Please configure build caching for faster rebuilds. Read more: https://nextjs.org/docs/messages/no-cache
+2025-01-21T20:55:18.347Z [INFO]: Attention: Next.js now collects completely anonymous telemetry regarding usage.
+2025-01-21T20:55:18.347Z [INFO]: This information is used to shape Next.js' roadmap and prioritize features.
+                                 You can learn more, including how to opt-out if you'd not like to participate in this anonymous program, by visiting the following URL:
+                                 https://nextjs.org/telemetry
+2025-01-21T20:55:18.439Z [INFO]: ▲ Next.js 14.1.0
+2025-01-21T20:55:18.439Z [INFO]: - Environments: .env.production
+2025-01-21T20:55:18.505Z [INFO]: Creating an optimized production build ...
+2025-01-21T20:55:47.177Z [INFO]: ✓ Compiled successfully
+2025-01-21T20:55:47.181Z [INFO]: Linting and checking validity of types ...
+2025-01-21T20:55:52.051Z [INFO]: Collecting page data ...
+2025-01-21T20:55:52.671Z [INFO]: Generating static pages (0/10) ...
+2025-01-21T20:55:54.040Z [INFO]: Supabase URL: https://qkljxtvrmjsabdqxixyf.supabase.co
+                                 Supabase Key exists: true
+                                 Using Supabase URL: https://qkljxtvrmjsabdqxixyf.supabase.co
+2025-01-21T20:55:54.040Z [INFO]: Supabase URL: https://qkljxtvrmjsabdqxixyf.supabase.co
+                                 Supabase Key exists: true
+                                 Using Supabase URL: https://qkljxtvrmjsabdqxixyf.supabase.co
+                                 Supabase URL: https://qkljxtvrmjsabdqxixyf.supabase.co
+                                 Supabase Key exists: true
+                                 Using Supabase URL: https://qkljxtvrmjsabdqxixyf.supabase.co
+2025-01-21T20:55:54.041Z [INFO]: Generating static pages (2/10)
+2025-01-21T20:55:54.041Z [INFO]: Generating static pages (4/10)
+2025-01-21T20:55:54.427Z [INFO]: Generating static pages (7/10)
+2025-01-21T20:55:54.672Z [INFO]: ✓ Generating static pages (10/10)
+2025-01-21T20:55:54.809Z [INFO]: Finalizing page optimization ...
+2025-01-21T20:55:54.809Z [INFO]: Collecting build traces ...
+2025-01-21T20:56:10.135Z [INFO]: 
+2025-01-21T20:56:10.140Z [INFO]: Route (app)                              Size     First Load JS
+                                 ┌ ○ /                                    958 B           153 kB
+                                 ├ ○ /_not-found                          887 B          85.2 kB
+                                 ├ ○ /auth/login                          1.6 kB          290 kB
+                                 ├ ○ /auth/register                       1.82 kB         290 kB
+                                 ├ ○ /dashboard                           4.13 kB         252 kB
+                                 ├ ○ /profile                             2.06 kB         287 kB
+                                 ├ ○ /tickets                             63.2 kB         357 kB
+                                 ├ λ /tickets/[id]                        17.1 kB         305 kB
+                                 └ ○ /tickets/new                         1.67 kB         311 kB
+                                 + First Load JS shared by all            84.3 kB
+                                 ├ chunks/686-510c4702e42dca16.js       28.9 kB
+                                 ├ chunks/69c4c07a-08ea88c6cffc820c.js  53.4 kB
+                                 └ other shared chunks (total)          1.98 kB
+                                 ○  (Static)   prerendered as static content
+                                 λ  (Dynamic)  server-rendered on demand using Node.js
+2025-01-21T20:56:10.168Z [INFO]: # Completed phase: build
+                                 ## Completed Frontend Build
+2025-01-21T20:56:10.238Z [INFO]: ## Build completed successfully
+2025-01-21T20:56:10.239Z [INFO]: # Starting caching...
+2025-01-21T20:56:10.247Z [INFO]: # Creating cache artifact...
+2025-01-21T20:56:59.455Z [INFO]: # Created cache artifact
+2025-01-21T20:56:59.559Z [INFO]: # Uploading cache artifact...
+2025-01-21T20:57:23.623Z [INFO]: # Uploaded cache artifact
+2025-01-21T20:57:23.688Z [INFO]: # Caching completed
+2025-01-21T20:57:23.696Z [ERROR]: !!! CustomerError: Can't find required-server-files.json in build output directory
+2025-01-21T20:57:23.696Z [INFO]: # Starting environment caching...
+2025-01-21T20:57:23.696Z [INFO]: # Environment caching completed
+

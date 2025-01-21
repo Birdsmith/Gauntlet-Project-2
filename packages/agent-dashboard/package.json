@@ -6,10 +6,11 @@
     "dev": "next dev --port 3001",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "clean": "rm -rf node_modules && rm -rf .next"
   },
   "dependencies": {
-    "@autocrm/common": "workspace:*",
+    "@autocrm/common": "^0.0.1",
     "@ant-design/cssinjs": "^1.21.0",
     "@supabase/auth-helpers-nextjs": "^0.8.7",
     "@supabase/supabase-js": "^2.39.3",
