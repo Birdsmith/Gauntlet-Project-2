@@ -16,9 +16,11 @@ applications:
             - env | grep -e NEXT_PUBLIC_ >> .env.production
             - pnpm build
       artifacts:
-        baseDirectory: .next
+        baseDirectory: .
         files:
-          - '**/*'
+          - .next/**/*
+          - node_modules/**/*
+          - package.json
         discard-paths: false
       cache:
         paths:
