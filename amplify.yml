@@ -8,6 +8,7 @@ applications:
             - npm install -g pnpm
             - cd ../..
             - pnpm install
+            - pnpm build --filter @autocrm/common
             - cd packages/customer-portal
         build:
           commands:
