@@ -38,8 +38,9 @@ export default function NewTicketPage() {
 
       message.success('Ticket created successfully')
       router.push('/tickets')
-    } catch (error: any) {
-      message.error(error.message || 'Failed to create ticket')
+    } catch (error: unknown) {
+      const errorMessage = error instanceof Error ? error.message : 'Failed to create ticket'
+      message.error(errorMessage)
     } finally {
       setLoading(false)
     }

@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { Table, Button, Tag, Typography, Space, message } from 'antd'
+import { Table, Button, Tag, Typography, message } from 'antd'
 import type { ColumnsType } from 'antd/es/table'
 import { PlusOutlined } from '@ant-design/icons'
 import { supabase } from '@autocrm/common'
@@ -57,8 +57,9 @@ export default function TicketsPage() {
       if (error) throw error
 
       setTickets(data || [])
-    } catch (error: any) {
-      message.error(error.message || 'Failed to load tickets')
+    } catch (error: unknown) {
+      const errorMessage = error instanceof Error ? error.message : 'Failed to load tickets'
+      message.error(errorMessage)
     } finally {
       setLoading(false)
     }

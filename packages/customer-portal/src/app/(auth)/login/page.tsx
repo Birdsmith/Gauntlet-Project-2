@@ -35,9 +35,9 @@ export default function LoginPage() {
 
         <div style={{ textAlign: 'center', marginTop: 16 }}>
           <Text type="secondary">
-            Don't have an account?{' '}
-            <Link href="/register" style={{ color: '#1890ff' }}>
-              Create one now
+            Don&apos;t have an account?{' '}
+            <Link href="/auth/register" style={{ color: '#1677ff' }}>
+              Register here
             </Link>
           </Text>
         </div>

@@ -38,9 +38,9 @@ export default function ProfilePage() {
             name: profile.name || '',
           })
         }
-      } catch (error: any) {
-        console.error('Error loading profile:', error)
-        message.error('Failed to load profile')
+      } catch (error: unknown) {
+        const errorMessage = error instanceof Error ? error.message : 'Failed to load profile'
+        message.error(errorMessage)
       } finally {
         setLoading(false)
       }
@@ -64,9 +64,9 @@ export default function ProfilePage() {
       if (error) throw error
 
       message.success('Profile updated successfully')
-    } catch (error: any) {
-      console.error('Error updating profile:', error)
-      message.error(error.message || 'Failed to update profile')
+    } catch (error: unknown) {
+      const errorMessage = error instanceof Error ? error.message : 'Failed to update profile'
+      message.error(errorMessage)
     } finally {
       setLoading(false)
     }

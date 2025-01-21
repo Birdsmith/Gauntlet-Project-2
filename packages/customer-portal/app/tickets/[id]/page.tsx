@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useCallback } from 'react'
 import {
   Card,
   Typography,
@@ -71,7 +71,9 @@ export default function TicketDetailsPage() {
     })
   }, [])
 
-  const fetchTicketDetails = async () => {
+  const fetchTicketDetails = useCallback(async () => {
+    if (!params.id) return
+
     try {
       const { data, error } = await supabase
         .from('tickets')
@@ -102,17 +104,17 @@ export default function TicketDetailsPage() {
 
       if (messagesError) throw messagesError
       setMessages(messagesData)
-    } catch (error: any) {
-      console.error('Error fetching ticket details:', error)
-      message.error('Failed to load ticket details')
+    } catch (error: unknown) {
+      const errorMessage = error instanceof Error ? error.message : 'Failed to load ticket details'
+      message.error(errorMessage)
     } finally {
       setLoading(false)
     }
-  }
+  }, [params.id])
 
   useEffect(() => {
     fetchTicketDetails()
-  }, [params.id])
+  }, [fetchTicketDetails])
 
   const handleSendMessage = async (values: { content: string }) => {
     try {
@@ -133,9 +135,9 @@ export default function TicketDetailsPage() {
       messageForm.resetFields()
       await fetchTicketDetails() // Refresh messages
       message.success('Message sent successfully')
-    } catch (error: any) {
-      console.error('Error sending message:', error)
-      message.error(error.message || 'Failed to send message')
+    } catch (error: unknown) {
+      const errorMessage = error instanceof Error ? error.message : 'Failed to send message'
+      message.error(errorMessage)
     } finally {
       setSendingMessage(false)
     }
@@ -157,9 +159,9 @@ export default function TicketDetailsPage() {
 
           message.success('Ticket deleted successfully')
           router.push('/tickets')
-        } catch (error: any) {
-          console.error('Error deleting ticket:', error)
-          message.error(error.message || 'Failed to delete ticket')
+        } catch (error: unknown) {
+          const errorMessage = error instanceof Error ? error.message : 'Failed to delete ticket'
+          message.error(errorMessage)
         } finally {
           setDeleting(false)
         }

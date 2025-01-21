@@ -4,7 +4,7 @@ import { Inter } from 'next/font/google'
 import './globals.css'
 import { Layout, Menu, Typography, Button } from 'antd'
 import { useRouter, usePathname } from 'next/navigation'
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { supabase } from '@autocrm/common'
 import AntdRegistry from './providers'
 
@@ -12,44 +12,32 @@ const inter = Inter({ subsets: ['latin'] })
 const { Header, Content, Sider } = Layout
 const { Title } = Typography
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+interface LayoutProps {
+  children: React.ReactNode
+}
+
+export default function RootLayout({ children }: LayoutProps) {
   const router = useRouter()
   const pathname = usePathname()
-  const [user, setUser] = useState<any>(null)
-  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    const checkUser = async () => {
-      const {
-        data: { session },
-        error,
-      } = await supabase.auth.getSession()
-      if (error) {
-        console.error('Error checking auth status:', error)
-        return
+    const handleAuthChange = (event: 'SIGNED_IN' | 'SIGNED_OUT') => {
+      if (event === 'SIGNED_OUT') {
+        router.push('/auth/login')
       }
-
-      if (!session) {
-        // If not logged in and not already on auth pages, redirect to login
-        if (!pathname.startsWith('/auth/')) {
-          router.push('/auth/login')
-        }
-      } else {
-        setUser(session.user)
-      }
-      setLoading(false)
     }
 
-    checkUser()
-  }, [pathname, router])
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange(handleAuthChange)
 
-  const content = loading ? (
-    <div
-      style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}
-    >
-      Loading...
-    </div>
-  ) : pathname.startsWith('/auth/') || !user ? (
+    return () => {
+      subscription.unsubscribe()
+    }
+  }, [router])
+
+  const isAuthPage = pathname.startsWith('/auth/')
+  const content = isAuthPage ? (
     children
   ) : (
     <Layout style={{ minHeight: '100vh' }}>

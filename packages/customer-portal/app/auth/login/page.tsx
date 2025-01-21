@@ -15,23 +15,20 @@ export default function LoginPage() {
   const handleLogin = async (values: { email: string; password: string }) => {
     try {
       setLoading(true)
-      console.log('Attempting login with email:', values.email)
-
-      const { data, error } = await supabase.auth.signInWithPassword({
+      const { error } = await supabase.auth.signInWithPassword({
         email: values.email,
         password: values.password,
       })
 
       if (error) {
-        console.error('Login error:', error)
         throw error
       }
 
-      console.log('Login successful:', data)
+      message.success('Login successful')
       router.push('/dashboard')
-    } catch (error: any) {
-      console.error('Full error:', error)
-      message.error(error.message || 'An error occurred during login')
+    } catch (error: unknown) {
+      const errorMessage = error instanceof Error ? error.message : 'An error occurred during login'
+      message.error(errorMessage)
     } finally {
       setLoading(false)
     }

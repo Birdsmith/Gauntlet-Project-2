@@ -1,7 +1,7 @@
 'use client'
 
-import { useState, useEffect } from 'react'
-import { Typography, Table, Tag, Button, Space } from 'antd'
+import { useEffect, useState } from 'react'
+import { Table, Button, Tag, Typography, message } from 'antd'
 import { PlusOutlined } from '@ant-design/icons'
 import { supabase } from '@autocrm/common'
 
@@ -35,8 +35,10 @@ export default function TicketsPage() {
       if (error) throw error
 
       setTickets(tickets)
-    } catch (error) {
-      console.error('Error fetching tickets:', error)
+    } catch (error: unknown) {
+      const errorMessage = error instanceof Error ? error.message : 'Failed to load tickets'
+      message.error(errorMessage)
+      setTickets([])
     } finally {
       setLoading(false)
     }
@@ -93,7 +95,7 @@ export default function TicketsPage() {
     {
       title: 'Actions',
       key: 'actions',
-      render: (_: any, record: Ticket) => (
+      render: (_: unknown, record: Ticket) => (
         <Button type="link" href={`/tickets/${record.id}`}>
           View Details
         </Button>

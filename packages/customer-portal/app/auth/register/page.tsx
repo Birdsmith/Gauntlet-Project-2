@@ -39,9 +39,10 @@ export default function RegisterPage() {
         message.success('Registration successful! Please check your email to verify your account.')
         router.push('/auth/login?registered=true')
       }
-    } catch (error: any) {
-      console.error('Registration error:', error)
-      message.error(error.message || 'An error occurred during registration')
+    } catch (error: unknown) {
+      const errorMessage =
+        error instanceof Error ? error.message : 'An error occurred during registration'
+      message.error(errorMessage)
     } finally {
       setLoading(false)
     }
