@@ -14,15 +14,15 @@ applications:
         build:
           commands:
             - env | grep -e NEXT_PUBLIC_ >> .env.production
-            - NEXT_PRIVATE_STANDALONE=true pnpm build
+            - pnpm build
       artifacts:
-        baseDirectory: .
+        baseDirectory: .next/standalone
         files:
-          - .next/**/*
-          - public/**/*
-          - node_modules/**/*
-          - package.json
-          - next.config.js
+          - '**/*'
+          - ../.next/static/**/*
+          - ../public/**/*
+          - ../package.json
+          - ../next.config.js
         discard-paths: false
       cache:
         paths:
