@@ -16,13 +16,12 @@ applications:
             - env | grep -e NEXT_PUBLIC_ >> .env.production
             - pnpm build
       artifacts:
-        baseDirectory: .next/standalone
+        baseDirectory: .next/standalone/packages/customer-portal
         files:
           - '**/*'
-          - ../.next/static/**/*
-          - ../public/**/*
-          - ../package.json
-          - ../next.config.js
+          - .next/static/**/*
+          - public/**/*
+          - node_modules/.pnpm/next@14.1.0/**/*
         discard-paths: false
       cache:
         paths:
