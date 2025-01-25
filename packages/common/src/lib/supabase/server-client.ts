@@ -12,7 +12,6 @@ export const createServerClient = () => {
 }
 
 // For middleware and server actions where we need more control
-// TODO: Investigate correct type for cookieStore
-export const createCustomServerClient = (cookieStore: unknown) => {
-  return createServerComponentClient<Database>({ cookies: cookieStore as any })
+export const createCustomServerClient = (cookieStore: () => ReturnType<typeof cookies>) => {
+  return createServerComponentClient<Database>({ cookies: cookieStore })
 }

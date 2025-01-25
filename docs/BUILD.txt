@@ -1,8 +1,8 @@
-2025-01-21T22:15:35.829Z [INFO]: # Cloning repository: git@github.com:Birdsmith/Gauntlet-Project-2.git
-2025-01-21T22:15:36.879Z [INFO]: 
-2025-01-21T22:15:36.880Z [INFO]: Cloning into 'Gauntlet-Project-2'...
-2025-01-21T22:15:36.880Z [INFO]: # Switching to commit: 50081e2017cfb7d6a2d048092842dbf886da8c9d
-2025-01-21T22:15:36.897Z [INFO]: Note: switching to '50081e2017cfb7d6a2d048092842dbf886da8c9d'.
+2025-01-25T00:12:33.388Z [INFO]: # Cloning repository: git@github.com:Birdsmith/Gauntlet-Project-2.git
+2025-01-25T00:12:34.396Z [INFO]: 
+2025-01-25T00:12:34.396Z [INFO]: Cloning into 'Gauntlet-Project-2'...
+2025-01-25T00:12:34.397Z [INFO]: # Switching to commit: 14eb56fe8e51f3996198ade9f871824908657f1e
+2025-01-25T00:12:34.416Z [INFO]: Note: switching to '14eb56fe8e51f3996198ade9f871824908657f1e'.
                                  You are in 'detached HEAD' state. You can look around, make experimental
                                  changes and commit them, and you can discard any commits you make in this
                                  state without impacting any branches by switching back to a branch.
@@ -12,153 +12,88 @@
                                  Or undo this operation with:
                                  git switch -
                                  Turn off this advice by setting config variable advice.detachedHead to false
-                                 HEAD is now at 50081e2 refactor: migrate from pnpm to npm workspaces - Remove pnpm configs, update package.json files, fix amplify.yml, clean up project structure
-2025-01-21T22:15:36.947Z [INFO]: Successfully cleaned up Git credentials
-2025-01-21T22:15:36.947Z [INFO]: # Checking for Git submodules at: /codebuild/output/src1196498306/src/Gauntlet-Project-2/.gitmodules
-2025-01-21T22:15:36.955Z [INFO]: # Retrieving environment cache...
-2025-01-21T22:15:36.990Z [WARNING]: ! Unable to write cache: {"code":"ERR_BAD_REQUEST","message":"Request failed with status code 404"})}
-2025-01-21T22:15:36.990Z [INFO]: ---- Setting Up SSM Secrets ----
-2025-01-21T22:15:36.990Z [INFO]: SSM params {"Path":"/amplify/dc5lptlmhukoq/main/","WithDecryption":true}
-2025-01-21T22:15:37.039Z [WARNING]: !Failed to set up process.env.secrets
-2025-01-21T22:15:37.633Z [INFO]: # No package override configuration found.
-2025-01-21T22:15:37.637Z [INFO]: # Retrieving cache...
-2025-01-21T22:16:42.796Z [INFO]: # Extracting cache...
-2025-01-21T22:17:42.206Z [INFO]: # Extraction completed
-2025-01-21T22:17:42.632Z [INFO]: # Retrieved cache
-2025-01-21T22:17:47.883Z [INFO]: ## Starting Backend Build
+                                 HEAD is now at 14eb56f feat: Implement multi-dashboard setup with AWS Amplify configs, customer portal, agent dashboard, and shared components
+2025-01-25T00:12:34.453Z [INFO]: Successfully cleaned up Git credentials
+2025-01-25T00:12:34.453Z [INFO]: # Checking for Git submodules at: /codebuild/output/src1667915713/src/Gauntlet-Project-2/.gitmodules
+2025-01-25T00:12:34.461Z [INFO]: # Retrieving environment cache...
+2025-01-25T00:12:34.494Z [WARNING]: ! Unable to write cache: {"code":"ERR_BAD_REQUEST","message":"Request failed with status code 404"})}
+2025-01-25T00:12:34.494Z [INFO]: ---- Setting Up SSM Secrets ----
+2025-01-25T00:12:34.494Z [INFO]: SSM params {"Path":"/amplify/dc5lptlmhukoq/main/","WithDecryption":true}
+2025-01-25T00:12:34.544Z [WARNING]: !Failed to set up process.env.secrets
+2025-01-25T00:12:35.105Z [INFO]: # No package override configuration found.
+2025-01-25T00:12:35.109Z [INFO]: # Retrieving cache...
+2025-01-25T00:12:47.598Z [INFO]: # Extracting cache...
+2025-01-25T00:12:57.616Z [INFO]: # Extraction completed
+2025-01-25T00:12:57.809Z [INFO]: # Retrieved cache
+2025-01-25T00:13:01.611Z [INFO]: ## Starting Backend Build
                                  ## Checking for associated backend environment...
                                  ## No backend environment association found, continuing...
                                  ## Completed Backend Build
-2025-01-21T22:17:47.891Z [INFO]: ## Starting Frontend Build
+2025-01-25T00:13:01.619Z [INFO]: ## Starting Frontend Build
                                  # Starting phase: preBuild
                                  # Executing command: cd ../..
-2025-01-21T22:17:47.938Z [INFO]: # Executing command: npm ci
-2025-01-21T22:18:17.463Z [WARNING]: npm WARN deprecated inflight@1.0.6: This module is not supported, and leaks memory. Do not use it. Check out lru-cache if you want a good and tested way to coalesce async requests by a key value, which is much more comprehensive and powerful.
-2025-01-21T22:18:17.716Z [WARNING]: npm WARN deprecated rimraf@3.0.2: Rimraf versions prior to v4 are no longer supported
-2025-01-21T22:18:17.932Z [WARNING]: npm WARN deprecated
-2025-01-21T22:18:17.933Z [WARNING]: glob@7.2.3: Glob versions prior to v9 are no longer supported
-2025-01-21T22:18:18.197Z [WARNING]: npm WARN deprecated
-2025-01-21T22:18:18.197Z [WARNING]: @supabase/auth-helpers-shared@0.6.3: This package is now deprecated - please use the @supabase/ssr package instead.
-2025-01-21T22:18:18.280Z [WARNING]: npm WARN deprecated
-2025-01-21T22:18:18.281Z [WARNING]: @humanwhocodes/object-schema@2.0.3: Use @eslint/object-schema instead
-2025-01-21T22:18:18.384Z [WARNING]: npm WARN
-2025-01-21T22:18:18.384Z [WARNING]: deprecated @humanwhocodes/config-array@0.13.0: Use @eslint/config-array instead
-2025-01-21T22:18:18.631Z [WARNING]: npm WARN
-2025-01-21T22:18:18.632Z [WARNING]: deprecated @supabase/auth-helpers-nextjs@0.8.7: This package is now deprecated - please use the @supabase/ssr package instead.
-2025-01-21T22:18:20.491Z [WARNING]: npm WARN deprecated eslint@8.57.1: This version is no longer supported. Please see https://eslint.org/version-support for other options.
-2025-01-21T22:18:29.056Z [INFO]: added 481 packages, and audited 486 packages in 28s
-2025-01-21T22:18:29.060Z [INFO]: 146 packages are looking for funding
+2025-01-25T00:13:01.671Z [INFO]: # Executing command: npm ci
+2025-01-25T00:13:19.898Z [WARNING]: npm WARN
+2025-01-25T00:13:19.904Z [WARNING]: deprecated inflight@1.0.6: This module is not supported, and leaks memory. Do not use it. Check out lru-cache if you want a good and tested way to coalesce async requests by a key value, which is much more comprehensive and powerful.
+2025-01-25T00:13:20.078Z [WARNING]: npm WARN deprecated rimraf@3.0.2: Rimraf versions prior to v4 are no longer supported
+2025-01-25T00:13:20.265Z [WARNING]: npm WARN deprecated
+2025-01-25T00:13:20.266Z [WARNING]: glob@7.2.3: Glob versions prior to v9 are no longer supported
+2025-01-25T00:13:21.134Z [WARNING]: npm WARN deprecated @humanwhocodes/config-array@0.13.0: Use @eslint/config-array instead
+2025-01-25T00:13:21.177Z [WARNING]: npm WARN deprecated @humanwhocodes/object-schema@2.0.3: Use @eslint/object-schema instead
+2025-01-25T00:13:23.560Z [WARNING]: npm WARN
+2025-01-25T00:13:23.565Z [WARNING]: deprecated eslint@8.57.1: This version is no longer supported. Please see https://eslint.org/version-support for other options.
+2025-01-25T00:13:34.209Z [INFO]: added 482 packages, and audited 487 packages in 23s
+2025-01-25T00:13:34.215Z [INFO]: 147 packages are looking for funding
                                  run `npm fund` for details
-2025-01-21T22:18:29.112Z [INFO]: 1 high severity vulnerability
-                                 To address all issues, run:
+2025-01-25T00:13:34.272Z [INFO]: 3 vulnerabilities (2 low, 1 high)
+                                 To address all issues (including breaking changes), run:
                                  npm audit fix --force
                                  Run `npm audit` for details.
-2025-01-21T22:18:29.135Z [INFO]: # Executing command: npm run build:common
-2025-01-21T22:18:29.409Z [INFO]: > autocrm@0.1.0 build:common
+2025-01-25T00:13:34.296Z [INFO]: # Executing command: npm run build:common
+2025-01-25T00:13:34.580Z [INFO]: > autocrm@0.1.0 build:common
                                  > npm run build -w @autocrm/common
-2025-01-21T22:18:29.715Z [INFO]: > @autocrm/common@0.0.1 build
+2025-01-25T00:13:34.879Z [INFO]: > @autocrm/common@0.0.1 build
                                  > tsup
-2025-01-21T22:18:30.429Z [INFO]: CLI Building entry: src/index.ts
-2025-01-21T22:18:30.429Z [INFO]: CLI Using tsconfig: tsconfig.json
-2025-01-21T22:18:30.429Z [INFO]: CLI tsup v8.3.5
-2025-01-21T22:18:30.429Z [INFO]: CLI Using tsup config: /codebuild/output/src1196498306/src/Gauntlet-Project-2/packages/common/tsup.config.ts
-2025-01-21T22:18:30.436Z [INFO]: CLI Target: es2017
-2025-01-21T22:18:30.437Z [INFO]: CLI Cleaning output folder
-2025-01-21T22:18:30.439Z [INFO]: ESM Build start
-2025-01-21T22:18:30.439Z [INFO]: CJS Build start
-2025-01-21T22:18:30.538Z [INFO]: ESM dist/index.mjs 8.12 KB
-2025-01-21T22:18:30.539Z [INFO]: ESM ⚡️ Build success in 99ms
-                                 CJS dist/index.js 8.77 KB
-                                 CJS ⚡️ Build success in 99ms
-2025-01-21T22:18:30.759Z [INFO]: DTS Build start
-2025-01-21T22:18:33.577Z [INFO]: DTS ⚡️ Build success in 2819ms
-2025-01-21T22:18:33.582Z [INFO]: DTS dist/index.d.mts 4.75 KB
-                                 DTS dist/index.d.ts  4.75 KB
-2025-01-21T22:18:33.617Z [INFO]: # Executing command: cd packages/customer-portal
-2025-01-21T22:18:33.625Z [INFO]: # Executing command: npm ci
-2025-01-21T22:18:38.541Z [WARNING]: npm
-2025-01-21T22:18:38.546Z [WARNING]: WARN deprecated inflight@1.0.6: This module is not supported, and leaks memory. Do not use it. Check out lru-cache if you want a good and tested way to coalesce async requests by a key value, which is much more comprehensive and powerful.
-2025-01-21T22:18:38.638Z [WARNING]: npm
-2025-01-21T22:18:38.638Z [WARNING]: WARN deprecated @humanwhocodes/config-array@0.13.0: Use @eslint/config-array instead
-2025-01-21T22:18:38.645Z [WARNING]: npm
-2025-01-21T22:18:38.646Z [WARNING]: WARN deprecated rimraf@3.0.2: Rimraf versions prior to v4 are no longer supported
-2025-01-21T22:18:38.711Z [WARNING]: npm
-2025-01-21T22:18:38.711Z [WARNING]: WARN deprecated glob@7.2.3: Glob versions prior to v9 are no longer supported
-2025-01-21T22:18:38.718Z [WARNING]: npm
-2025-01-21T22:18:38.718Z [WARNING]: WARN deprecated @humanwhocodes/object-schema@2.0.3: Use @eslint/object-schema instead
-2025-01-21T22:18:38.772Z [WARNING]: npm
-2025-01-21T22:18:38.773Z [WARNING]: WARN deprecated @supabase/auth-helpers-shared@0.6.3: This package is now deprecated - please use the @supabase/ssr package instead.
-2025-01-21T22:18:40.441Z [WARNING]: npm WARN
-2025-01-21T22:18:40.441Z [WARNING]: deprecated @supabase/auth-helpers-nextjs@0.8.7: This package is now deprecated - please use the @supabase/ssr package instead.
-2025-01-21T22:18:41.529Z [WARNING]: npm WARN
-2025-01-21T22:18:41.529Z [WARNING]: deprecated eslint@8.57.1: This version is no longer supported. Please see https://eslint.org/version-support for other options.
-2025-01-21T22:18:47.293Z [INFO]: added 467 packages, and audited 470 packages in 13s
-2025-01-21T22:18:47.299Z [INFO]: 139 packages are looking for funding
-                                 run `npm fund` for details
-2025-01-21T22:18:47.357Z [INFO]: 1 high severity vulnerability
-                                 To address all issues, run:
-                                 npm audit fix --force
-                                 Run `npm audit` for details.
-2025-01-21T22:18:47.398Z [INFO]: # Completed phase: preBuild
-                                 # Starting phase: build
-                                 # Executing command: env | grep -e NEXT_PUBLIC_ >> .env.production
-2025-01-21T22:18:47.400Z [INFO]: # Executing command: npm run build
-2025-01-21T22:18:47.672Z [INFO]: > @autocrm/customer-portal@0.0.1 build
-                                 > next build
-2025-01-21T22:18:48.241Z [INFO]: ⚠ No build cache found. Please configure build caching for faster rebuilds. Read more: https://nextjs.org/docs/messages/no-cache
-2025-01-21T22:18:48.247Z [INFO]: Attention: Next.js now collects completely anonymous telemetry regarding usage.
-2025-01-21T22:18:48.247Z [INFO]: This information is used to shape Next.js' roadmap and prioritize features.
-                                 You can learn more, including how to opt-out if you'd not like to participate in this anonymous program, by visiting the following URL:
-                                 https://nextjs.org/telemetry
-2025-01-21T22:18:48.336Z [INFO]: ▲ Next.js 14.1.0
-2025-01-21T22:18:48.337Z [INFO]: - Environments: .env.production
-2025-01-21T22:18:48.395Z [INFO]: Creating an optimized production build ...
-2025-01-21T22:19:12.501Z [INFO]: ✓ Compiled successfully
-2025-01-21T22:19:12.505Z [INFO]: Linting and checking validity of types ...
-2025-01-21T22:19:14.932Z [WARNING]: ⨯ ESLint: Failed to load config "prettier" to extend from. Referenced from: /codebuild/output/src1196498306/src/Gauntlet-Project-2/packages/customer-portal/.eslintrc.json
-2025-01-21T22:19:16.621Z [INFO]: Collecting page data ...
-2025-01-21T22:19:17.292Z [INFO]: Generating static pages (0/10) ...
-2025-01-21T22:19:18.675Z [INFO]: Supabase URL: https://qkljxtvrmjsabdqxixyf.supabase.co
-                                 Supabase Key exists: true
-                                 Using Supabase URL: https://qkljxtvrmjsabdqxixyf.supabase.co
-2025-01-21T22:19:18.676Z [INFO]: Supabase URL: https://qkljxtvrmjsabdqxixyf.supabase.co
-                                 Supabase Key exists: true
-                                 Using Supabase URL: https://qkljxtvrmjsabdqxixyf.supabase.co
-2025-01-21T22:19:18.676Z [INFO]: Supabase URL: https://qkljxtvrmjsabdqxixyf.supabase.co
-                                 Supabase Key exists: true
-                                 Using Supabase URL: https://qkljxtvrmjsabdqxixyf.supabase.co
-                                 Generating static pages (2/10)
-2025-01-21T22:19:18.688Z [INFO]: Generating static pages (4/10)
-2025-01-21T22:19:19.039Z [INFO]: Generating static pages (7/10)
-2025-01-21T22:19:19.189Z [INFO]: ✓ Generating static pages (10/10)
-2025-01-21T22:19:19.439Z [INFO]: Finalizing page optimization ...
-2025-01-21T22:19:19.439Z [INFO]: Collecting build traces ...
-2025-01-21T22:19:32.764Z [INFO]: 
-2025-01-21T22:19:32.769Z [INFO]: Route (app)                              Size     First Load JS
-                                 ┌ ○ /                                    960 B           153 kB
-                                 ├ ○ /_not-found                          885 B          85.2 kB
-                                 ├ ○ /auth/login                          1.61 kB         290 kB
-                                 ├ ○ /auth/register                       1.83 kB         290 kB
-                                 ├ ○ /dashboard                           4.14 kB         252 kB
-                                 ├ ○ /profile                             2.07 kB         287 kB
-                                 ├ ○ /tickets                             63.3 kB         357 kB
-                                 ├ λ /tickets/[id]                        17.1 kB         305 kB
-                                 └ ○ /tickets/new                         1.68 kB         311 kB
-                                 + First Load JS shared by all            84.3 kB
-                                 ├ chunks/1dd3208c-39cd51400240d468.js  53.4 kB
-                                 ├ chunks/997-9251189a1321fb3f.js       29 kB
-                                 └ other shared chunks (total)          1.98 kB
-                                 ○  (Static)   prerendered as static content
-                                 λ  (Dynamic)  server-rendered on demand using Node.js
-2025-01-21T22:19:32.813Z [INFO]: # Completed phase: build
-                                 ## Completed Frontend Build
-2025-01-21T22:19:32.869Z [INFO]: ## Build completed successfully
-2025-01-21T22:19:32.870Z [INFO]: # Starting caching...
-2025-01-21T22:19:32.878Z [INFO]: # Creating cache artifact...
-2025-01-21T22:19:40.522Z [INFO]: # Created cache artifact
-2025-01-21T22:19:40.651Z [INFO]: # Uploading cache artifact...
-2025-01-21T22:19:46.621Z [INFO]: # Uploaded cache artifact
-2025-01-21T22:19:46.719Z [INFO]: # Caching completed
-2025-01-21T22:19:59.717Z [INFO]: # Starting environment caching...
-2025-01-21T22:19:59.787Z [INFO]: # Environment caching completed
+2025-01-25T00:13:35.470Z [INFO]: CLI Building entry: src/index.ts, src/server/index.ts
+2025-01-25T00:13:35.470Z [INFO]: CLI Using tsconfig: tsconfig.json
+2025-01-25T00:13:35.470Z [INFO]: CLI tsup v8.3.5
+                                 CLI Using tsup config: /codebuild/output/src1667915713/src/Gauntlet-Project-2/packages/common/tsup.config.ts
+2025-01-25T00:13:35.477Z [INFO]: CLI Target: es2017
+2025-01-25T00:13:35.478Z [INFO]: CLI Cleaning output folder
+2025-01-25T00:13:35.479Z [INFO]: ESM Build start
+2025-01-25T00:13:35.480Z [INFO]: CJS Build start
+2025-01-25T00:13:35.733Z [WARNING]: dist/server/index.js (1:0): Module level directives cause errors when bundled, "use server" in "dist/server/index.js" was ignored.
+2025-01-25T00:13:35.839Z [WARNING]: dist/server/index.mjs (1:0): Module level directives cause errors when bundled, "use server" in "dist/server/index.mjs" was ignored.
+2025-01-25T00:13:35.919Z [INFO]: CJS dist/server/index.js 40.94 KB
+2025-01-25T00:13:35.920Z [INFO]: CJS dist/index.js        41.34 KB
+                                 CJS ⚡️ Build success in 440ms
+                                 ESM dist/index.mjs          38.91 KB
+                                 ESM dist/chunk-HXTWBZ4J.mjs 2.10 KB
+2025-01-25T00:13:35.920Z [INFO]: ESM dist/server/index.mjs   38.89 KB
+                                 ESM ⚡️ Build success in 441ms
+2025-01-25T00:13:35.945Z [INFO]: DTS Build start
+2025-01-25T00:13:40.189Z [WARNING]: src/components/TicketDetail.tsx(253,31): error TS7006: Parameter 'int' implicitly has an 'any' type.
+                                    src/components/TicketDetail.tsx(262,27): error TS7006: Parameter 'hist' implicitly has an 'any' type.
+                                    src/components/TicketDetail.tsx(328,18): error TS7006: Parameter 'payload' implicitly has an 'any' type.
+                                    src/components/TicketDetail.tsx(342,18): error TS7006: Parameter 'payload' implicitly has an 'any' type.
+                                    src/components/TicketDetail.tsx(371,18): error TS7006: Parameter 'payload' implicitly has an 'any' type.
+2025-01-25T00:13:40.194Z [WARNING]: Error: error occurred in dts build
+                                    at Worker.<anonymous> (/codebuild/output/src1667915713/src/Gauntlet-Project-2/node_modules/tsup/dist/index.js:1541:26)
+                                    at Worker.emit (node:events:517:28)
+                                    at MessagePort.<anonymous> (node:internal/worker:243:53)
+                                    at [nodejs.internal.kHybridDispatch] (node:internal/event_target:757:20)
+                                    at exports.emitMessage (node:internal/per_context/messageport:23:28)
+                                    DTS Build error
+2025-01-25T00:13:40.228Z [WARNING]: npm
+2025-01-25T00:13:40.228Z [WARNING]: ERR! Lifecycle script `build` failed with error:
+                                    npm ERR! Error: command failed
+                                    npm
+2025-01-25T00:13:40.229Z [WARNING]: ERR!   in workspace: @autocrm/common@0.0.1
+                                    npm ERR!
+2025-01-25T00:13:40.229Z [WARNING]: at location: /codebuild/output/src1667915713/src/Gauntlet-Project-2/packages/common
+2025-01-25T00:13:40.293Z [ERROR]: !!! Build failed
+2025-01-25T00:13:40.293Z [INFO]: Please read more about Amplify Hosting's support for SSR frameworks to find if your build failure is related to an unsupported feature: https://docs.aws.amazon.com/amplify/latest/userguide/amplify-ssr-framework-support.html. You may also find this troubleshooting guide useful: https://docs.aws.amazon.com/amplify/latest/userguide/troubleshooting-ssr-deployment.html
+2025-01-25T00:13:40.293Z [ERROR]: !!! Error: Command failed with exit code 1
+2025-01-25T00:13:40.294Z [INFO]: # Starting environment caching...
+2025-01-25T00:13:40.294Z [INFO]: # Environment caching completed
 

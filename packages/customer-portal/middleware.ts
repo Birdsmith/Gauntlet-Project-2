@@ -1,6 +1,6 @@
 'use server'
 
-import { createMiddlewareSupabaseClient } from '@autocrm/common/src/server'
+import { createMiddlewareSupabaseClient } from '@autocrm/common/server'
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
 

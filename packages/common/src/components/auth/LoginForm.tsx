@@ -4,7 +4,6 @@ import { useState } from 'react'
 import { Form, Input, Button, Alert, message, Typography } from 'antd'
 import { UserOutlined, LockOutlined } from '@ant-design/icons'
 import { createBrowserSupabaseClient } from '../../lib/supabase/browser-client'
-import type { Database } from '../../lib/types/database.types'
 
 const { Text } = Typography
 
@@ -109,7 +108,7 @@ export default function LoginForm({
         {onRegisterClick && (
           <div style={{ textAlign: 'center' }}>
             <Text>
-              Don't have an account?{' '}
+              Don&apos;t have an account?{' '}
               <a onClick={onRegisterClick} style={{ cursor: 'pointer' }}>
                 Register now
               </a>

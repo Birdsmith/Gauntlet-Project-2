@@ -1,5 +1,6 @@
 version: 1
 applications:
+  # Customer Portal
   - appRoot: packages/customer-portal
     frontend:
       phases:
@@ -17,6 +18,70 @@ applications:
             # Add environment variables
             - env | grep -e NEXT_PUBLIC_ >> .env.production
             # Build the customer portal
+            - npm run build
+      artifacts:
+        baseDirectory: .next
+        files:
+          - '**/*'
+          - ../../../node_modules/**/*
+          - public/**/*
+        discard-paths: false
+      cache:
+        paths:
+          - ../../node_modules/**/*
+          - node_modules/**/*
+          - .next/cache/**/*
+
+  # Admin Dashboard
+  - appRoot: packages/admin-dashboard
+    frontend:
+      phases:
+        preBuild:
+          commands:
+            # Install dependencies from root and build common package
+            - cd ../..
+            - npm ci
+            - npm run build:common
+            # Return to admin dashboard and ensure its dependencies are installed
+            - cd packages/admin-dashboard
+            - npm ci
+        build:
+          commands:
+            # Add environment variables
+            - env | grep -e NEXT_PUBLIC_ >> .env.production
+            # Build the admin dashboard
+            - npm run build
+      artifacts:
+        baseDirectory: .next
+        files:
+          - '**/*'
+          - ../../../node_modules/**/*
+          - public/**/*
+        discard-paths: false
+      cache:
+        paths:
+          - ../../node_modules/**/*
+          - node_modules/**/*
+          - .next/cache/**/*
+
+  # Agent Dashboard
+  - appRoot: packages/agent-dashboard
+    frontend:
+      phases:
+        preBuild:
+          commands:
+            # Install dependencies from root and build common package
+            - cd ../..
+            - npm ci
+            - npm run build:common
+            # Return to agent dashboard and ensure its dependencies are installed
+            - cd packages/agent-dashboard
+            - npm ci
+        build:
+          commands:
+            # Add environment variables
+            - env | grep -e NEXT_PUBLIC_ >> .env.production
+            # Build the agent dashboard
             - npm run build
       artifacts:
         baseDirectory: .next

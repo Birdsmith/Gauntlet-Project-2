@@ -8,4 +8,4 @@ export {
 } from '../lib/supabase/middleware-client'
 
 // Types
-export type { Database } from '../lib/types/database.types' 
+export type { Database } from '../lib/types/database.types'

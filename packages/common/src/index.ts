@@ -10,3 +10,4 @@ export { createBrowserSupabaseClient } from './lib/supabase/browser-client'
 
 // Types
 export type { Database } from './lib/types/database.types'
+export type { MenuItem } from './components/layout/DashboardLayout'

@@ -9,32 +9,29 @@ import {
   Form,
   Input,
   Timeline,
-  App,
   Spin,
-  Descriptions,
   Modal,
   Select,
   Space,
   message,
 } from 'antd'
 import { ArrowLeftOutlined, DeleteOutlined } from '@ant-design/icons'
-import { RealtimeChannel } from '@supabase/supabase-js'
 import {
-  createClient,
-  SupabaseClient,
-  CommentRow,
-  TicketHistoryRow,
-  UserRow,
-} from '../lib/supabase/client'
+  RealtimeChannel,
+  RealtimePostgresChangesPayload,
+  SupabaseClient as BaseSupabaseClient,
+} from '@supabase/supabase-js'
+import { createClient } from '../lib/supabase/client'
 import type { Database } from '../lib/types/database.types'
 
 const { Title, Text } = Typography
 const { TextArea } = Input
 
+type SupabaseClient = BaseSupabaseClient<Database>
+
 type Tables = Database['public']['Tables']
 type TicketPriority = Database['public']['Enums']['ticket_priority']
 type TicketStatus = Database['public']['Enums']['ticket_status']
-type InteractionType = Database['public']['Enums']['interactionType']
 
 type BaseComment = Tables['comment']['Row']
 type BaseInteraction = Tables['interaction']['Row']
@@ -45,54 +42,18 @@ interface ExtendedComment extends BaseComment {
   user: Pick<BaseUser, 'name' | 'email'> | null
 }
 
-interface ExtendedInteraction extends BaseInteraction {
-  user: Pick<BaseUser, 'name' | 'email'> | null
-}
+type TicketRow = Tables['ticket']['Row']
+type InteractionRow = Tables['interaction']['Row']
+type TicketHistoryRow = Tables['ticket_history']['Row']
+type CommentRow = Tables['comment']['Row']
 
-interface ExtendedTicketHistory extends BaseTicketHistory {
-  user: Pick<BaseUser, 'name' | 'email'> | null
-}
-
-interface TicketDetails {
-  id: string
-  title: string
+type TicketDetails = Omit<TicketRow, 'description'> & {
   description: string
-  status: TicketStatus
-  priority: TicketPriority
-  created_at: string
-  updated_at: string
-  created_by: string
-  creator: {
-    name: string | null
-    email: string | null
-  }
-  assigned_to: string | null
-  assignee?: {
-    name: string | null
-    email: string | null
-  }
+  creator: { name: string | null; email: string | null }
+  assignee?: { name: string | null; email: string | null }
 }
 
-type Comment = {
-  message_id: string
-  content: string
-  created_at: string
-  ticket_id: string
-  user_id: string
-  user: Pick<UserRow, 'name' | 'email'>
-}
-
-type HistoryEntry = {
-  history_id: string
-  created_at: string
-  status_changed_to: TicketStatus
-  prio_changed_to: TicketPriority
-  ticket_id: string
-  changed_by: string
-  user: Pick<UserRow, 'name' | 'email'>
-}
-
-interface Message {
+type Message = {
   id: string | number
   content: string
   created_at: string
@@ -101,8 +62,8 @@ interface Message {
     name: string | null
     email: string | null
   }
-  status_changed_to?: TicketStatus | null
-  prio_changed_to?: TicketPriority | null
+  status_changed_to?: Database['public']['Enums']['ticket_status'] | null
+  prio_changed_to?: Database['public']['Enums']['ticket_priority'] | null
 }
 
 interface TicketDetailProps {
@@ -125,11 +86,39 @@ const priorityOptions = [
   { label: 'Urgent', value: 'urgent' },
 ]
 
+const getPriorityColor = (priority: Database['public']['Enums']['ticket_priority']) => {
+  switch (priority) {
+    case 'low':
+      return 'green'
+    case 'medium':
+      return 'blue'
+    case 'high':
+      return 'orange'
+    case 'urgent':
+      return 'red'
+    default:
+      return 'blue'
+  }
+}
+
+const getStatusColor = (status: Database['public']['Enums']['ticket_status']) => {
+  switch (status) {
+    case 'open':
+      return 'blue'
+    case 'in_progress':
+      return 'orange'
+    case 'resolved':
+    case 'closed':
+      return 'green'
+    default:
+      return 'blue'
+  }
+}
+
 export function TicketDetail({ ticketId, userRole, onBack }: TicketDetailProps) {
   const [ticket, setTicket] = useState<TicketDetails | null>(null)
   const [messages, setMessages] = useState<Message[]>([])
   const [comments, setComments] = useState<ExtendedComment[]>([])
-  const [historyEntries, setHistoryEntries] = useState<HistoryEntry[]>([])
   const [loading, setLoading] = useState(true)
   const [sending, setSending] = useState(false)
   const [sendingComment, setSendingComment] = useState(false)
@@ -250,27 +239,31 @@ export function TicketDetail({ ticketId, userRole, onBack }: TicketDetailProps) 
 
       // Handle the results
       const interactions =
-        interactionData?.map((int) => ({
-          id: int.id,
-          content: int.content,
-          created_at: int.created_at,
-          user: int.user || { name: null, email: null },
-          type: 'interaction' as const,
-        })) || []
+        interactionData?.map(
+          (int: BaseInteraction & { user: Pick<BaseUser, 'name' | 'email'> | null }) => ({
+            id: int.id,
+            content: int.content,
+            created_at: int.created_at,
+            user: int.user || { name: null, email: null },
+            type: 'interaction' as const,
+          })
+        ) || []
 
       const history =
-        historyData?.map((hist) => ({
-          id: hist.history_id,
-          content: formatHistoryEntry({
+        historyData?.map(
+          (hist: BaseTicketHistory & { user: Pick<BaseUser, 'name' | 'email'> | null }) => ({
+            id: hist.history_id,
+            content: formatHistoryEntry({
+              status_changed_to: hist.status_changed_to,
+              prio_changed_to: hist.prio_changed_to,
+            }),
+            created_at: hist.created_at,
+            user: hist.user || { name: null, email: null },
+            type: 'history' as const,
             status_changed_to: hist.status_changed_to,
             prio_changed_to: hist.prio_changed_to,
-          }),
-          created_at: hist.created_at,
-          user: hist.user || { name: null, email: null },
-          type: 'history' as const,
-          status_changed_to: hist.status_changed_to,
-          prio_changed_to: hist.prio_changed_to,
-        })) || []
+          })
+        ) || []
 
       if (isStaff && commentData) {
         setComments(commentData)
@@ -318,41 +311,81 @@ export function TicketDetail({ ticketId, userRole, onBack }: TicketDetailProps) 
       ticketSubscription = supabase
         .channel(`ticket-${ticketId}`)
         .on(
-          'postgres_changes',
+          'postgres_changes' as const,
           {
             event: '*',
             schema: 'public',
             table: 'ticket',
             filter: `id=eq.${ticketId}`,
           },
-          async (payload) => {
-            if (payload.new) {
-              setTicket((prev) => (prev ? { ...prev, ...payload.new } : null))
+          async (
+            payload: RealtimePostgresChangesPayload<{
+              old: TicketRow | null
+              new: TicketRow
+            }>
+          ) => {
+            const newTicket = payload.new as TicketRow
+            if (!newTicket) return
+
+            // Fetch creator and assignee data
+            const [creatorData, assigneeData] = await Promise.all([
+              supabase.from('user').select('name, email').eq('id', newTicket.created_by).single(),
+              newTicket.assigned_to
+                ? supabase
+                    .from('user')
+                    .select('name, email')
+                    .eq('id', newTicket.assigned_to)
+                    .single()
+                : Promise.resolve({ data: null }),
+            ])
+
+            const ticketData: TicketDetails = {
+              id: newTicket.id,
+              title: newTicket.title,
+              description: newTicket.description || '',
+              status: newTicket.status,
+              priority: newTicket.priority,
+              created_at: newTicket.created_at,
+              updated_at: newTicket.updated_at,
+              created_by: newTicket.created_by,
+              assigned_to: newTicket.assigned_to,
+              creator: creatorData?.data || { name: null, email: null },
+              assignee: assigneeData?.data || undefined,
             }
+
+            setTicket((prev) => (prev ? ticketData : null))
           }
         )
         .on(
-          'postgres_changes',
+          'postgres_changes' as const,
           {
             event: 'INSERT',
             schema: 'public',
             table: 'interaction',
             filter: `ticket_id=eq.${ticketId}`,
           },
-          async (payload) => {
+          async (
+            payload: RealtimePostgresChangesPayload<{
+              old: null
+              new: InteractionRow
+            }>
+          ) => {
+            const newInteraction = payload.new as InteractionRow
+            if (!newInteraction) return
+
             const { data: userData } = await supabase
               .from('user')
               .select('name, email')
-              .eq('id', payload.new.user_id)
+              .eq('id', newInteraction.user_id)
               .single()
 
             setMessages((prev) =>
               [
                 ...prev,
                 {
-                  id: payload.new.id,
-                  content: payload.new.content,
-                  created_at: payload.new.created_at,
+                  id: newInteraction.id,
+                  content: newInteraction.content,
+                  created_at: newInteraction.created_at,
                   user: userData || { name: null, email: null },
                   type: 'interaction' as const,
                 },
@@ -361,32 +394,42 @@ export function TicketDetail({ ticketId, userRole, onBack }: TicketDetailProps) 
           }
         )
         .on(
-          'postgres_changes',
+          'postgres_changes' as const,
           {
             event: 'INSERT',
             schema: 'public',
             table: 'ticket_history',
             filter: `ticket_id=eq.${ticketId}`,
           },
-          async (payload) => {
+          async (
+            payload: RealtimePostgresChangesPayload<{
+              old: null
+              new: TicketHistoryRow
+            }>
+          ) => {
+            const newHistory = payload.new as TicketHistoryRow
+            if (!newHistory) return
+
             const { data: userData } = await supabase
               .from('user')
               .select('name, email')
-              .eq('id', payload.new.changed_by)
+              .eq('id', newHistory.changed_by)
               .single()
 
             setMessages((prev) =>
               [
                 ...prev,
                 {
-                  id: payload.new.id,
+                  id: newHistory.history_id,
                   content: formatHistoryEntry({
-                    status_changed_to: payload.new.status_changed_to,
-                    prio_changed_to: payload.new.prio_changed_to,
+                    status_changed_to: newHistory.status_changed_to,
+                    prio_changed_to: newHistory.prio_changed_to,
                   }),
-                  created_at: payload.new.created_at,
+                  created_at: newHistory.created_at,
                   user: userData || { name: null, email: null },
                   type: 'history' as const,
+                  status_changed_to: newHistory.status_changed_to,
+                  prio_changed_to: newHistory.prio_changed_to,
                 },
               ].sort((a, b) => new Date(a.created_at).getTime() - new Date(b.created_at).getTime())
             )
@@ -395,28 +438,36 @@ export function TicketDetail({ ticketId, userRole, onBack }: TicketDetailProps) 
 
       if (isStaff) {
         ticketSubscription = ticketSubscription.on(
-          'postgres_changes',
+          'postgres_changes' as const,
           {
             event: 'INSERT',
             schema: 'public',
             table: 'comment',
             filter: `ticket_id=eq.${ticketId}`,
           },
-          async (payload) => {
+          async (
+            payload: RealtimePostgresChangesPayload<{
+              old: null
+              new: CommentRow
+            }>
+          ) => {
+            const newComment = payload.new as CommentRow
+            if (!newComment) return
+
             const { data: userData } = await supabase
               .from('user')
               .select('name, email')
-              .eq('id', payload.new.user_id)
+              .eq('id', newComment.user_id)
               .single()
 
             setComments((prev) => [
               ...prev,
               {
-                message_id: payload.new.message_id,
-                content: payload.new.content,
-                created_at: payload.new.created_at,
-                ticket_id: payload.new.ticket_id,
-                user_id: payload.new.user_id,
+                message_id: newComment.message_id,
+                content: newComment.content,
+                created_at: newComment.created_at,
+                ticket_id: newComment.ticket_id,
+                user_id: newComment.user_id,
                 user: userData || { name: null, email: null },
               },
             ])
@@ -435,7 +486,7 @@ export function TicketDetail({ ticketId, userRole, onBack }: TicketDetailProps) 
         supabase.removeChannel(ticketSubscription)
       }
     }
-  }, [fetchTicket, isStaff])
+  }, [ticketId, isStaff, supabase, fetchTicket])
 
   const handleSendMessage = async (values: { content: string }) => {
     try {
@@ -582,20 +633,6 @@ export function TicketDetail({ ticketId, userRole, onBack }: TicketDetailProps) 
     }
   }
 
-  const handleCommentInsert = (payload: any) => {
-    if (payload.new) {
-      const newComment: ExtendedComment = {
-        message_id: payload.new.message_id,
-        content: payload.new.content,
-        created_at: payload.new.created_at,
-        ticket_id: payload.new.ticket_id,
-        user_id: payload.new.user_id,
-        user: payload.new.user || { name: null, email: null },
-      }
-      setComments((prevComments) => [...prevComments, newComment])
-    }
-  }
-
   if (loading) {
     return (
       <div style={{ textAlign: 'center', padding: '48px' }}>
@@ -693,29 +730,15 @@ export function TicketDetail({ ticketId, userRole, onBack }: TicketDetailProps) 
                   )}
                   {!isStaff && (
                     <>
-                      <Tag
-                        color={
-                          ticket.priority === 'low'
-                            ? 'green'
-                            : ticket.priority === 'medium'
-                              ? 'blue'
-                              : ticket.priority === 'high'
-                                ? 'orange'
-                                : 'red'
-                        }
-                      >
-                        {ticket.priority.toUpperCase()}
+                      <Tag color={getPriorityColor(ticket.priority ?? 'low')}>
+                        {ticket.priority
+                          ? ticket.priority.charAt(0).toUpperCase() + ticket.priority.slice(1)
+                          : 'Low'}
                       </Tag>
-                      <Tag
-                        color={
-                          ticket.status === 'open'
-                            ? 'blue'
-                            : ticket.status === 'in_progress'
-                              ? 'orange'
-                              : 'green'
-                        }
-                      >
-                        {ticket.status.toUpperCase()}
+                      <Tag color={getStatusColor(ticket.status ?? 'open')}>
+                        {ticket.status
+                          ? ticket.status.charAt(0).toUpperCase() + ticket.status.slice(1)
+                          : 'Open'}
                       </Tag>
                     </>
                   )}
