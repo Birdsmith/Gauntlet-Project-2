@@ -53,11 +53,6 @@ export default function DashboardLayout({ children }: LayoutProps) {
               onClick: () => router.push('/queue'),
             },
             {
-              key: '/tickets',
-              label: 'My Tickets',
-              onClick: () => router.push('/tickets'),
-            },
-            {
               key: '/profile',
               label: 'Profile',
               onClick: () => router.push('/profile'),

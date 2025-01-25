@@ -1,6 +1,11 @@
 'use client'
 
 import { Card, Form, Checkbox, Select, Space } from 'antd'
+import { type Database } from '@autocrm/common'
+
+type TicketStatus = Database['public']['Enums']['ticket_status']
+type TicketPriority = Database['public']['Enums']['ticket_priority']
+type SortOption = 'newest' | 'oldest' | 'priority_desc' | 'priority_asc'
 
 const statusOptions = [
   { label: 'Open', value: 'open' },
@@ -24,22 +29,22 @@ const sortOptions = [
 ]
 
 interface QueueFiltersProps {
-  onStatusChange: (values: (string | number)[]) => void
-  onPriorityChange: (values: (string | number)[]) => void
-  selectedStatuses: (string | number)[]
-  selectedPriorities: (string | number)[]
+  onStatusChange: (values: TicketStatus[]) => void
+  onPriorityChange: (values: TicketPriority[]) => void
+  onSortChange: (value: SortOption) => void
+  selectedStatuses: TicketStatus[]
+  selectedPriorities: TicketPriority[]
+  sortBy: SortOption
 }
 
 export const QueueFilters = ({
   onStatusChange,
   onPriorityChange,
+  onSortChange,
   selectedStatuses,
   selectedPriorities,
+  sortBy,
 }: QueueFiltersProps) => {
-  const handleSortChange = (value: string) => {
-    console.log('Sort:', value)
-  }
-
   return (
     <Card size="small">
       <Form layout="vertical">
@@ -48,7 +53,7 @@ export const QueueFilters = ({
             <Checkbox.Group
               options={statusOptions}
               value={selectedStatuses}
-              onChange={onStatusChange}
+              onChange={values => onStatusChange(values as TicketStatus[])}
             />
           </Form.Item>
 
@@ -56,15 +61,15 @@ export const QueueFilters = ({
             <Checkbox.Group
               options={priorityOptions}
               value={selectedPriorities}
-              onChange={onPriorityChange}
+              onChange={values => onPriorityChange(values as TicketPriority[])}
             />
           </Form.Item>
 
           <Form.Item label="Sort By" style={{ marginBottom: 0, minWidth: 200 }}>
             <Select
-              defaultValue="newest"
+              value={sortBy}
               options={sortOptions}
-              onChange={handleSortChange}
+              onChange={value => onSortChange(value as SortOption)}
               style={{ width: '100%' }}
             />
           </Form.Item>

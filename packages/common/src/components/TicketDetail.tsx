@@ -355,7 +355,7 @@ export function TicketDetail({ ticketId, userRole, onBack }: TicketDetailProps) 
                 assignee: assigneeData?.data || undefined,
               }
 
-              setTicket((prev) => (prev ? ticketData : null))
+              setTicket(ticketData)
             }
           )
           .on(
@@ -390,50 +390,6 @@ export function TicketDetail({ ticketId, userRole, onBack }: TicketDetailProps) 
                     created_at: newInteraction.created_at,
                     user: userData || { name: null, email: null },
                     type: 'interaction' as const,
-                  },
-                ].sort(
-                  (a, b) => new Date(a.created_at).getTime() - new Date(b.created_at).getTime()
-                )
-              )
-            }
-          )
-          .on(
-            'postgres_changes' as const,
-            {
-              event: 'INSERT',
-              schema: 'public',
-              table: 'ticket_history',
-              filter: `ticket_id=eq.${ticketId}`,
-            },
-            async (
-              payload: RealtimePostgresChangesPayload<{
-                old: null
-                new: TicketHistoryRow
-              }>
-            ) => {
-              const newHistory = payload.new as TicketHistoryRow
-              if (!newHistory) return
-
-              const { data: userData } = await supabase
-                .from('user')
-                .select('name, email')
-                .eq('id', newHistory.changed_by)
-                .single()
-
-              setMessages((prev) =>
-                [
-                  ...prev,
-                  {
-                    id: newHistory.history_id,
-                    content: formatHistoryEntry({
-                      status_changed_to: newHistory.status_changed_to,
-                      prio_changed_to: newHistory.prio_changed_to,
-                    }),
-                    created_at: newHistory.created_at,
-                    user: userData || { name: null, email: null },
-                    type: 'history' as const,
-                    status_changed_to: newHistory.status_changed_to,
-                    prio_changed_to: newHistory.prio_changed_to,
                   },
                 ].sort(
                   (a, b) => new Date(a.created_at).getTime() - new Date(b.created_at).getTime()
@@ -487,18 +443,18 @@ export function TicketDetail({ ticketId, userRole, onBack }: TicketDetailProps) 
       }
     }
 
-    // Only set up subscriptions if we're viewing a ticket
-    if (ticket) {
-      fetchTicket()
+    // First fetch the ticket data
+    fetchTicket().then(() => {
+      // Only set up subscriptions after initial data is loaded
       setupRealtimeSubscription()
-    }
+    })
 
     return () => {
       if (ticketSubscription) {
         supabase.removeChannel(ticketSubscription)
       }
     }
-  }, [ticketId, isStaff, supabase, ticket, fetchTicket])
+  }, [ticketId, isStaff, supabase, fetchTicket])
 
   const handleSendMessage = async (values: { content: string }) => {
     try {

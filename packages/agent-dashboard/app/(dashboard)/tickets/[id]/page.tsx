@@ -14,7 +14,7 @@ export default function TicketDetailPage({
     <TicketDetail
       ticketId={params.id}
       userRole="agent"
-      onBack={() => router.push('/tickets')}
+      onBack={() => router.push('/queue')}
     />
   )
 }

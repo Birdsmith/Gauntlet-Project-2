@@ -25,7 +25,7 @@ export const DashboardLayout = ({
 }: DashboardLayoutProps) => {
   const [collapsed, setCollapsed] = useState(false)
   const {
-    token: { colorBgContainer, borderRadiusLG },
+    token: { colorBgContainer, borderRadiusLG, colorBgElevated },
   } = theme.useToken()
   const supabase = createBrowserSupabaseClient()
 
@@ -61,10 +61,14 @@ export const DashboardLayout = ({
         <Header
           style={{
             padding: 0,
-            background: 'transparent',
-            position: 'absolute',
+            background: colorBgElevated,
+            boxShadow:
+              '0 1px 2px 0 rgba(0, 0, 0, 0.03), 0 1px 6px -1px rgba(0, 0, 0, 0.02), 0 2px 4px 0 rgba(0, 0, 0, 0.02)',
+            position: 'sticky',
+            top: 0,
+            zIndex: 1,
             width: '100%',
-            zIndex: 1000,
+            backdropFilter: 'blur(8px)',
           }}
         >
           <div
@@ -73,6 +77,7 @@ export const DashboardLayout = ({
               justifyContent: 'space-between',
               alignItems: 'center',
               paddingRight: 24,
+              height: '100%',
             }}
           >
             <Button
@@ -83,9 +88,18 @@ export const DashboardLayout = ({
                 fontSize: '16px',
                 width: 64,
                 height: 64,
+                borderRadius: 0,
               }}
             />
-            <Button type="text" icon={<LogoutOutlined />} onClick={handleLogout}>
+            <Button
+              type="text"
+              icon={<LogoutOutlined />}
+              onClick={handleLogout}
+              style={{
+                fontSize: '14px',
+                borderRadius: 6,
+              }}
+            >
               Logout
             </Button>
           </div>
