@@ -1,0 +1,38 @@
+:root {
+  --background-dark: #141414;
+  --component-background: #1f1f1f;
+  --border-color: #303030;
+  --text-primary: rgba(255, 255, 255, 0.85);
+  --text-secondary: rgba(255, 255, 255, 0.45);
+}
+
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+html,
+body {
+  max-width: 100vw;
+  overflow-x: hidden;
+  height: 100%;
+  background: var(--background-dark);
+  color: var(--text-primary);
+}
+
+body {
+  color: rgb(var(--foreground-rgb));
+  background: rgb(var(--background-rgb));
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* Configure dark theme for Ant Design */
+:where(.css-dev-only-do-not-override-xxx).ant-app {
+  background: var(--background-dark);
+  color: var(--text-primary);
+} 

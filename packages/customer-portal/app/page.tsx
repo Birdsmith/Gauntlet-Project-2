@@ -1,14 +1,28 @@
 'use client'
 
-import { TestComponent } from '@autocrm/common'
+import { useEffect } from 'react'
+import { useRouter } from 'next/navigation'
+import { createBrowserSupabaseClient } from '@autocrm/common'
 
 export default function Home() {
-  return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <div className="z-10 max-w-5xl w-full items-center justify-between font-mono text-sm">
-        <h1 className="text-4xl font-bold mb-8">Welcome to AutoCRM</h1>
-        <TestComponent />
-      </div>
-    </main>
-  )
+  const router = useRouter()
+  const supabase = createBrowserSupabaseClient()
+
+  useEffect(() => {
+    const checkAuth = async () => {
+      const {
+        data: { session },
+      } = await supabase.auth.getSession()
+      if (session) {
+        router.replace('/tickets')
+      } else {
+        router.replace('/auth/login')
+      }
+    }
+
+    checkAuth()
+  }, [router, supabase])
+
+  // Return null since we're redirecting anyway
+  return null
 }

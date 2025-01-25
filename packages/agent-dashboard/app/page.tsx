@@ -1,14 +1,14 @@
 'use client'
 
-import { Typography } from 'antd'
+import { useEffect } from 'react'
+import { useRouter } from 'next/navigation'
 
-const { Title } = Typography
+export default function RootPage() {
+  const router = useRouter()
 
-export default function AgentDashboardPage() {
-  return (
-    <div>
-      <Title level={2}>Agent Dashboard</Title>
-      <p>Welcome to the agent dashboard.</p>
-    </div>
-  )
+  useEffect(() => {
+    router.replace('/auth/login')
+  }, [router])
+
+  return null
 }

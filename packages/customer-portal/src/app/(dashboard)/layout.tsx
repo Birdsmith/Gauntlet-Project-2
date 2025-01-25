@@ -5,7 +5,11 @@ import Link from 'next/link'
 import { FileTextOutlined, UserOutlined } from '@ant-design/icons'
 import { DashboardLayout } from '@autocrm/common'
 
-export default function CustomerDashboardLayout({ children }: { children: React.ReactNode }) {
+export default function CustomerDashboardLayout({
+  children,
+}: {
+  children: React.ReactNode
+}) {
   const router = useRouter()
 
   const menuItems = [
@@ -27,7 +31,11 @@ export default function CustomerDashboardLayout({ children }: { children: React.
   }
 
   return (
-    <DashboardLayout menuItems={menuItems} onLogout={handleLogout} appName="Customer Portal">
+    <DashboardLayout
+      menuItems={menuItems}
+      onLogout={handleLogout}
+      appName="Customer Portal"
+    >
       {children}
     </DashboardLayout>
   )

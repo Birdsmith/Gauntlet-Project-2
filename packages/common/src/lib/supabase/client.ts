@@ -1,5 +1,5 @@
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
-import type { Database } from '../types/supabase'
+import type { Database } from '../types/database.types'
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || ''
 const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || ''
@@ -16,10 +16,13 @@ export const createClient = () => {
   const fullUrl = supabaseUrl.startsWith('https://') ? supabaseUrl : `https://${supabaseUrl}`
   console.log('Using Supabase URL:', fullUrl)
 
-  return createClientComponentClient<Database>({
-    supabaseUrl: fullUrl,
-    supabaseKey,
-  })
+  return createClientComponentClient<Database>()
 }
 
 export const supabase = createClient()
+
+export type SupabaseClient = ReturnType<typeof createClient>
+export type Tables = Database['public']['Tables']
+export type CommentRow = Tables['comment']['Row']
+export type TicketHistoryRow = Tables['ticket_history']['Row']
+export type UserRow = Tables['user']['Row']

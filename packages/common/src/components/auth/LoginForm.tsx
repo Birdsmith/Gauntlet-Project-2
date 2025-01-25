@@ -1,11 +1,18 @@
+'use client'
+
 import { useState } from 'react'
-import { Form, Input, Button, Alert } from 'antd'
+import { Form, Input, Button, Alert, message, Typography } from 'antd'
 import { UserOutlined, LockOutlined } from '@ant-design/icons'
-import { supabase } from '../../lib/supabase/client'
+import { createBrowserSupabaseClient } from '../../lib/supabase/browser-client'
+import type { Database } from '../../lib/types/database.types'
+
+const { Text } = Typography
 
 interface LoginFormProps {
   onSuccess?: () => void
-  redirectPath?: string
+  requiredRole?: 'customer' | 'agent'
+  portalName?: string
+  onRegisterClick?: () => void
 }
 
 interface LoginValues {
@@ -13,27 +20,59 @@ interface LoginValues {
   password: string
 }
 
-export const LoginForm = ({ onSuccess, redirectPath = '/tickets' }: LoginFormProps) => {
+export default function LoginForm({
+  onSuccess,
+  requiredRole,
+  portalName = 'Portal',
+  onRegisterClick,
+}: LoginFormProps) {
   const [error, setError] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
+  const supabase = createBrowserSupabaseClient()
 
   const handleLogin = async (values: LoginValues) => {
     setError(null)
     setLoading(true)
 
     try {
-      const { error } = await supabase.auth.signInWithPassword({
+      const { data: authData, error: authError } = await supabase.auth.signInWithPassword({
         email: values.email,
         password: values.password,
       })
 
-      if (error) throw error
+      if (authError) throw authError
 
+      // Check user role if required
+      if (requiredRole) {
+        const { data: userData, error: userError } = await supabase
+          .from('user')
+          .select('role')
+          .eq('id', authData.user.id)
+          .maybeSingle()
+
+        if (userError) {
+          throw new Error('Failed to verify user role')
+        }
+
+        if (!userData) {
+          await supabase.auth.signOut()
+          throw new Error('User account not found')
+        }
+
+        if (userData.role !== requiredRole) {
+          await supabase.auth.signOut()
+          throw new Error(`Access denied. This ${portalName} is for ${requiredRole}s only.`)
+        }
+      }
+
+      message.success('Login successful')
       if (onSuccess) {
         onSuccess()
       }
     } catch (error) {
-      setError(error instanceof Error ? error.message : 'An error occurred')
+      const errorMessage = error instanceof Error ? error.message : 'An error occurred'
+      setError(errorMessage)
+      message.error(errorMessage)
     } finally {
       setLoading(false)
     }
@@ -66,6 +105,17 @@ export const LoginForm = ({ onSuccess, redirectPath = '/tickets' }: LoginFormPro
             Sign in
           </Button>
         </Form.Item>
+
+        {onRegisterClick && (
+          <div style={{ textAlign: 'center' }}>
+            <Text>
+              Don't have an account?{' '}
+              <a onClick={onRegisterClick} style={{ cursor: 'pointer' }}>
+                Register now
+              </a>
+            </Text>
+          </div>
+        )}
       </Form>
     </>
   )

@@ -1,18 +1,22 @@
 # AutoCRM - Week 1 MVP Outline
 
 ## MVP Goals
+
 Build a functional ticket management system with essential features for customer support, focusing on core functionality without AI integration.
 
 ## Core Features Implementation
 
 ### 1. Authentication System
+
 - [ ] User registration and login
 - [ ] Role-based access (Admin, Support Agent, Customer)
 - [ ] Session management
 - [ ] Password reset functionality
 
 ### 2. Ticket Management Core
+
 #### Database Schema
+
 ```sql
 -- Basic schema outline
 tickets
@@ -44,6 +48,7 @@ users
 ```
 
 #### API Endpoints
+
 ```typescript
 // Core ticket endpoints
 POST   /api/tickets           // Create ticket
@@ -65,7 +70,9 @@ PATCH  /api/users/:id        // Update user
 ### 3. User Interface Components
 
 #### Customer Portal
+
 1. **Ticket Creation**
+
    - Simple form with:
      - Title
      - Description
@@ -74,6 +81,7 @@ PATCH  /api/users/:id        // Update user
    - Auto-save draft functionality
 
 2. **Ticket List View**
+
    - Filter by status
    - Sort by date/priority
    - Search functionality
@@ -86,7 +94,9 @@ PATCH  /api/users/:id        // Update user
    - File attachment viewer
 
 #### Agent Dashboard
+
 1. **Queue Management**
+
    - Ticket list with filters
    - Quick status updates
    - Bulk actions
@@ -101,7 +111,9 @@ PATCH  /api/users/:id        // Update user
    - Quick actions toolbar
 
 #### Admin Panel
+
 1. **User Management**
+
    - Create/Edit users
    - Assign roles
    - View user activity
@@ -112,6 +124,7 @@ PATCH  /api/users/:id        // Update user
    - Set team leads
 
 ### 4. Real-time Features
+
 - WebSocket connections for:
   - New ticket notifications
   - Message updates
@@ -119,6 +132,7 @@ PATCH  /api/users/:id        // Update user
   - Assignment notifications
 
 ### 5. Performance Considerations
+
 - Implement pagination for all list views
 - Cache frequently accessed data
 - Optimize database queries
@@ -127,6 +141,7 @@ PATCH  /api/users/:id        // Update user
 ## Technical Implementation Details
 
 ### 1. Frontend Architecture
+
 ```typescript
 src/
   ├── app/
@@ -150,6 +165,7 @@ src/
 ```
 
 ### 2. Database Structure
+
 - Implement Row Level Security (RLS)
 - Set up database triggers for:
   - Updated_at timestamps
@@ -157,6 +173,7 @@ src/
   - Audit logging
 
 ### 3. API Structure
+
 - RESTful endpoints
 - JWT authentication
 - Rate limiting
@@ -166,36 +183,43 @@ src/
 ## MVP Development Phases
 
 ### Phase 1: Setup & Authentication (Days 1-2)
+
 - [ ] Project initialization
 - [ ] Database setup
 - [ ] Authentication system
 - [ ] Basic routing
 
 ### Phase 2: Core Ticket System (Days 3-4)
+
 - [ ] Database schema implementation
 - [ ] Basic CRUD operations
 - [ ] API endpoints
 - [ ] Basic UI components
 
 ### Phase 3: User Interface (Days 5-6)
+
 - [ ] Customer portal
 - [ ] Agent dashboard
 - [ ] Admin panel
 - [ ] Responsive design
 
 ### Phase 4: Real-time & Polish (Day 7)
+
 - [ ] WebSocket integration
 - [ ] Notifications
 - [ ] Performance optimization
 - [ ] Testing & bug fixes
 
 ## Testing Strategy
+
 1. Unit Tests
+
    - API endpoints
    - Component rendering
    - Utility functions
 
 2. Integration Tests
+
    - User flows
    - API interactions
    - Real-time updates
@@ -205,6 +229,7 @@ src/
    - Cross-browser testing
 
 ## Deployment Checklist
+
 - [ ] Environment variables configuration
 - [ ] Database migrations
 - [ ] Build optimization
@@ -215,6 +240,7 @@ src/
 - [ ] Backup strategy
 
 ## Success Criteria
+
 1. Users can successfully:
    - Create and manage tickets
    - Communicate through the platform
@@ -227,4 +253,4 @@ src/
    - Sub-second response times
    - 99.9% uptime
    - Proper error handling
-   - Data consistency 
+   - Data consistency

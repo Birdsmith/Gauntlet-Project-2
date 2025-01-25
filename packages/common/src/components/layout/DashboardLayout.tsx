@@ -1,15 +1,20 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { Layout, Menu, Button, theme } from 'antd'
+import type { MenuProps } from 'antd'
 import { MenuFoldOutlined, MenuUnfoldOutlined, LogoutOutlined } from '@ant-design/icons'
-import { supabase } from '../../lib/supabase/client'
+import { createBrowserSupabaseClient } from '../../lib/supabase/browser-client'
 
 const { Header, Sider, Content } = Layout
 
 interface DashboardLayoutProps {
   children: React.ReactNode
-  menuItems: any[]
+  menuItems: MenuItem[]
   onLogout?: () => void
   appName?: string
+}
+
+export type MenuItem = Required<MenuProps>['items'][number] & {
+  onClick?: () => void
 }
 
 export const DashboardLayout = ({
@@ -22,6 +27,7 @@ export const DashboardLayout = ({
   const {
     token: { colorBgContainer, borderRadiusLG },
   } = theme.useToken()
+  const supabase = createBrowserSupabaseClient()
 
   const handleLogout = async () => {
     await supabase.auth.signOut()

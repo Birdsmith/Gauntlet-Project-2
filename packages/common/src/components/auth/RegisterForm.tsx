@@ -1,10 +1,19 @@
+'use client'
+
 import { useState } from 'react'
-import { Form, Input, Button, Alert } from 'antd'
+import { Form, Input, Button, Alert, Typography } from 'antd'
 import { UserOutlined, LockOutlined, MailOutlined } from '@ant-design/icons'
 import { supabase } from '../../lib/supabase/client'
+import type { Database } from '../../lib/types/database.types'
 
-interface RegisterFormProps {
+const { Text } = Typography
+
+type UserRole = Database['public']['Enums']['user_role']
+
+export interface RegisterFormProps {
   onSuccess?: () => void
+  onLoginClick?: () => void
+  role?: UserRole
 }
 
 interface RegisterValues {
@@ -13,37 +22,98 @@ interface RegisterValues {
   password: string
 }
 
-export const RegisterForm = ({ onSuccess }: RegisterFormProps) => {
+export default function RegisterForm({
+  onSuccess,
+  onLoginClick,
+  role = 'customer',
+}: RegisterFormProps) {
   const [error, setError] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
 
   const handleRegister = async (values: RegisterValues) => {
+    console.log('Starting registration process...')
     setError(null)
     setLoading(true)
 
     try {
+      console.log('Calling supabase.auth.signUp with:', {
+        email: values.email,
+        options: {
+          data: {
+            name: values.name,
+            role,
+          },
+        },
+      })
+
       const { error: signUpError, data } = await supabase.auth.signUp({
         email: values.email,
         password: values.password,
         options: {
           data: {
             name: values.name,
-            role: 'customer',
+            role,
           },
         },
       })
 
-      if (signUpError) throw signUpError
+      console.log('Signup response:', {
+        error: signUpError
+          ? {
+              message: signUpError.message,
+              status: signUpError.status,
+              name: signUpError.name,
+            }
+          : null,
+        data: data
+          ? {
+              user: data.user
+                ? {
+                    id: data.user.id,
+                    email: data.user.email,
+                    metadata: data.user.user_metadata,
+                  }
+                : null,
+              session: data.session ? 'Session exists' : null,
+            }
+          : null,
+      })
+
+      if (signUpError) {
+        console.error('Signup error details:', {
+          message: signUpError.message,
+          status: signUpError.status,
+          name: signUpError.name,
+        })
+        throw signUpError
+      }
 
       if (!data.user) {
+        console.error('No user data in response:', data)
         throw new Error('No user data returned from signup')
       }
+
+      console.log('Registration successful:', {
+        id: data.user.id,
+        email: data.user.email,
+        metadata: data.user.user_metadata,
+      })
 
       if (onSuccess) {
         onSuccess()
       }
     } catch (error) {
-      setError(error instanceof Error ? error.message : 'An error occurred')
+      console.error(
+        'Registration error:',
+        error instanceof Error
+          ? {
+              message: error.message,
+              name: error.name,
+              stack: error.stack,
+            }
+          : error
+      )
+      setError(error instanceof Error ? error.message : 'An error occurred during registration')
     } finally {
       setLoading(false)
     }
@@ -91,6 +161,17 @@ export const RegisterForm = ({ onSuccess }: RegisterFormProps) => {
             Create account
           </Button>
         </Form.Item>
+
+        {onLoginClick && (
+          <div style={{ textAlign: 'center' }}>
+            <Text>
+              Already have an account?{' '}
+              <a onClick={onLoginClick} style={{ cursor: 'pointer' }}>
+                Sign in
+              </a>
+            </Text>
+          </div>
+        )}
       </Form>
     </>
   )

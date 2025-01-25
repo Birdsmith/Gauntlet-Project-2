@@ -1,24 +1,20 @@
 'use client'
 
 import { Inter } from 'next/font/google'
-import { ConfigProvider, theme } from 'antd'
+import './globals.css'
+import AntdRegistry from './providers'
 
 const inter = Inter({ subsets: ['latin'] })
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+interface LayoutProps {
+  children: React.ReactNode
+}
+
+export default function RootLayout({ children }: LayoutProps) {
   return (
     <html lang="en">
       <body className={inter.className}>
-        <ConfigProvider
-          theme={{
-            algorithm: theme.defaultAlgorithm,
-            token: {
-              colorPrimary: '#1677ff',
-            },
-          }}
-        >
-          {children}
-        </ConfigProvider>
+        <AntdRegistry>{children}</AntdRegistry>
       </body>
     </html>
   )

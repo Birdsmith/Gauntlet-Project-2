@@ -5,6 +5,7 @@ node_modules
 
 # testing
 coverage
+**/coverage
 
 # next.js
 .next/
@@ -44,6 +45,10 @@ packages/*/dist/
 packages/*/.turbo/
 packages/*/build/
 packages/*/out/
+packages/*/.cache/
+packages/*/.temp/
+packages/*/coverage/
+packages/*/*.tsbuildinfo
 
 # Vercel
 .vercel
@@ -52,7 +57,25 @@ packages/*/out/
 *.log
 .cache/
 .temp/
+tmp/
+temp/
 
 # PWA files
-public/sw.js
-public/workbox-*.js
+**/public/sw.js
+**/public/workbox-*.js
+**/public/worker-*.js
+**/public/sw.js.map
+**/public/workbox-*.js.map
+**/public/worker-*.js.map
+
+# Supabase
+**/supabase/.branches/
+**/supabase/.temp/
+
+# Storybook
+storybook-static/
+**/storybook-static/
+
+# Generated files
+**/*.generated.*
+**/__generated__/

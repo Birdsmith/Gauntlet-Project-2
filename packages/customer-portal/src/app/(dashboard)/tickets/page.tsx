@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react'
 import { Table, Button, Tag, Typography, message } from 'antd'
 import { PlusOutlined } from '@ant-design/icons'
-import { supabase } from '@autocrm/common'
+import { createBrowserSupabaseClient } from '@autocrm/common'
 
 const { Title } = Typography
 
@@ -23,11 +23,11 @@ export default function TicketsPage() {
     try {
       const {
         data: { session },
-      } = await supabase.auth.getSession()
+      } = await createBrowserSupabaseClient().auth.getSession()
       if (!session?.user?.id) return
 
-      const { data: tickets, error } = await supabase
-        .from('tickets')
+      const { data: tickets, error } = await createBrowserSupabaseClient()
+        .from('ticket')
         .select('*')
         .eq('created_by', session.user.id)
         .order('created_at', { ascending: false })
@@ -36,7 +36,8 @@ export default function TicketsPage() {
 
       setTickets(tickets)
     } catch (error: unknown) {
-      const errorMessage = error instanceof Error ? error.message : 'Failed to load tickets'
+      const errorMessage =
+        error instanceof Error ? error.message : 'Failed to load tickets'
       message.error(errorMessage)
       setTickets([])
     } finally {
@@ -83,7 +84,11 @@ export default function TicketsPage() {
           high: 'orange',
           urgent: 'red',
         }
-        return <Tag color={colors[priority as keyof typeof colors]}>{priority.toUpperCase()}</Tag>
+        return (
+          <Tag color={colors[priority as keyof typeof colors]}>
+            {priority.toUpperCase()}
+          </Tag>
+        )
       },
     },
     {
@@ -119,7 +124,12 @@ export default function TicketsPage() {
         </Button>
       </div>
 
-      <Table columns={columns} dataSource={tickets} rowKey="id" loading={loading} />
+      <Table
+        columns={columns}
+        dataSource={tickets}
+        rowKey="id"
+        loading={loading}
+      />
     </div>
   )
 }

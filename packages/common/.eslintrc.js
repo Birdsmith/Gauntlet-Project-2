@@ -5,4 +5,4 @@ module.exports = {
     'prettier/prettier': 'error',
     'react/display-name': 'off',
   },
-} 
+}

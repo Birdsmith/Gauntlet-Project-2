@@ -1,7 +1,9 @@
 # Project Technology Stack
 
 ## Frontend
+
 - **Next.js** - React Framework for Production
+
   - Server-side rendering (SSR) and static site generation (SSG)
   - API routes and serverless functions
   - Built-in routing and middleware
@@ -15,6 +17,7 @@
   - Large ecosystem of libraries and tools
 
 ## Backend & Database
+
 - **Supabase** - Open source Firebase alternative
   - PostgreSQL Database
   - Authentication
@@ -23,6 +26,7 @@
   - Row Level Security
 
 ## Deployment & Infrastructure
+
 - **AWS Amplify**
   - Continuous deployment
   - Hosting
@@ -31,6 +35,7 @@
   - Built-in security features
 
 ## AI Integration
+
 - **LangChain**
   - AI agent implementation
   - Large Language Model integration
@@ -39,7 +44,9 @@
   - Memory management for conversations
 
 ## Additional Tools & Libraries
+
 - **Development Environment**
+
   - TypeScript for type safety
   - ESLint for code quality
   - Prettier for code formatting
@@ -51,13 +58,14 @@
     - Customizable theming
     - Built-in accessibility
     - Responsive design patterns
-  - TailwindCSS for styling
-    - Utility-first CSS framework
-    - Custom styling and overrides
-  - Responsive design
-  - Accessibility features
+    - Consistent design language
+    - Rich interactive components
+    - Enterprise-level design system
+    - TypeScript support
+    - Extensive documentation
 
 ## Architecture Overview
+
 ```
 Frontend (React + Ant Design) ←→ Supabase Backend
            ↕                          ↕
@@ -65,6 +73,7 @@ Frontend (React + Ant Design) ←→ Supabase Backend
 ```
 
 ## Key Features
+
 - Real-time data synchronization
 - Secure authentication
 - AI-powered user assistance
@@ -73,18 +82,20 @@ Frontend (React + Ant Design) ←→ Supabase Backend
 - Enterprise-grade components
 
 ## Development Setup
+
 1. React + TypeScript frontend
 2. Supabase project configuration
 3. AWS Amplify CLI setup
 4. LangChain integration
 5. Environment configuration
-6. Ant Design + TailwindCSS setup
+6. Ant Design setup and configuration
 
 ## Security Considerations
+
 - JWT authentication
 - Row Level Security in Supabase
 - Environment variables management
 - API key security
 - Data encryption
 
-This stack provides a robust foundation for building a modern, AI-enhanced web application with real-time capabilities and secure data management. 
+This stack provides a robust foundation for building a modern, AI-enhanced web application with real-time capabilities and secure data management.

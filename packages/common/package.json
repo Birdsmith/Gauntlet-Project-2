@@ -5,6 +5,18 @@
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js"
+    },
+    "./server": {
+      "types": "./dist/server/index.d.ts",
+      "import": "./dist/server/index.mjs",
+      "require": "./dist/server/index.js"
+    }
+  },
   "sideEffects": false,
   "files": [
     "dist/**"
@@ -15,18 +27,19 @@
     "clean": "rm -rf node_modules && rm -rf dist"
   },
   "dependencies": {
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "antd": "^5.13.2",
     "@ant-design/icons": "^5.3.0",
-    "@supabase/auth-helpers-nextjs": "^0.8.7",
-    "@supabase/supabase-js": "^2.39.3"
+    "@ant-design/nextjs-registry": "^1.0.2",
+    "@supabase/ssr": "^0.1.0",
+    "@supabase/supabase-js": "^2.39.3",
+    "antd": "^5.13.2",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
   },
   "devDependencies": {
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "eslint": "^8",
-    "typescript": "^5",
-    "tsup": "^8.0.1"
+    "tsup": "^8.0.1",
+    "typescript": "^5"
   }
-} 
+}
