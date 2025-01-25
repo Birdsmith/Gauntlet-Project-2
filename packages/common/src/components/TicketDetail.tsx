@@ -300,193 +300,205 @@ export function TicketDetail({ ticketId, userRole, onBack }: TicketDetailProps) 
   }
 
   useEffect(() => {
-    let ticketSubscription: RealtimeChannel
+    let ticketSubscription: RealtimeChannel | null = null
 
     const setupRealtimeSubscription = async () => {
-      const {
-        data: { user },
-      } = await supabase.auth.getUser()
-      if (!user) return
+      try {
+        const auth = await supabase.auth.getUser()
+        if (!auth.data.user) {
+          console.debug('User not authenticated, skipping realtime subscriptions')
+          return
+        }
 
-      ticketSubscription = supabase
-        .channel(`ticket-${ticketId}`)
-        .on(
-          'postgres_changes' as const,
-          {
-            event: '*',
-            schema: 'public',
-            table: 'ticket',
-            filter: `id=eq.${ticketId}`,
-          },
-          async (
-            payload: RealtimePostgresChangesPayload<{
-              old: TicketRow | null
-              new: TicketRow
-            }>
-          ) => {
-            const newTicket = payload.new as TicketRow
-            if (!newTicket) return
+        ticketSubscription = supabase
+          .channel(`ticket-${ticketId}`)
+          .on(
+            'postgres_changes' as const,
+            {
+              event: '*',
+              schema: 'public',
+              table: 'ticket',
+              filter: `id=eq.${ticketId}`,
+            },
+            async (
+              payload: RealtimePostgresChangesPayload<{
+                old: TicketRow | null
+                new: TicketRow
+              }>
+            ) => {
+              const newTicket = payload.new as TicketRow
+              if (!newTicket) return
 
-            // Fetch creator and assignee data
-            const [creatorData, assigneeData] = await Promise.all([
-              supabase.from('user').select('name, email').eq('id', newTicket.created_by).single(),
-              newTicket.assigned_to
-                ? supabase
-                    .from('user')
-                    .select('name, email')
-                    .eq('id', newTicket.assigned_to)
-                    .single()
-                : Promise.resolve({ data: null }),
-            ])
+              // Fetch creator and assignee data
+              const [creatorData, assigneeData] = await Promise.all([
+                supabase.from('user').select('name, email').eq('id', newTicket.created_by).single(),
+                newTicket.assigned_to
+                  ? supabase
+                      .from('user')
+                      .select('name, email')
+                      .eq('id', newTicket.assigned_to)
+                      .single()
+                  : Promise.resolve({ data: null }),
+              ])
 
-            const ticketData: TicketDetails = {
-              id: newTicket.id,
-              title: newTicket.title,
-              description: newTicket.description || '',
-              status: newTicket.status,
-              priority: newTicket.priority,
-              created_at: newTicket.created_at,
-              updated_at: newTicket.updated_at,
-              created_by: newTicket.created_by,
-              assigned_to: newTicket.assigned_to,
-              creator: creatorData?.data || { name: null, email: null },
-              assignee: assigneeData?.data || undefined,
+              const ticketData: TicketDetails = {
+                id: newTicket.id,
+                title: newTicket.title,
+                description: newTicket.description || '',
+                status: newTicket.status,
+                priority: newTicket.priority,
+                created_at: newTicket.created_at,
+                updated_at: newTicket.updated_at,
+                created_by: newTicket.created_by,
+                assigned_to: newTicket.assigned_to,
+                creator: creatorData?.data || { name: null, email: null },
+                assignee: assigneeData?.data || undefined,
+              }
+
+              setTicket((prev) => (prev ? ticketData : null))
             }
+          )
+          .on(
+            'postgres_changes' as const,
+            {
+              event: 'INSERT',
+              schema: 'public',
+              table: 'interaction',
+              filter: `ticket_id=eq.${ticketId}`,
+            },
+            async (
+              payload: RealtimePostgresChangesPayload<{
+                old: null
+                new: InteractionRow
+              }>
+            ) => {
+              const newInteraction = payload.new as InteractionRow
+              if (!newInteraction) return
 
-            setTicket((prev) => (prev ? ticketData : null))
-          }
-        )
-        .on(
-          'postgres_changes' as const,
-          {
-            event: 'INSERT',
-            schema: 'public',
-            table: 'interaction',
-            filter: `ticket_id=eq.${ticketId}`,
-          },
-          async (
-            payload: RealtimePostgresChangesPayload<{
-              old: null
-              new: InteractionRow
-            }>
-          ) => {
-            const newInteraction = payload.new as InteractionRow
-            if (!newInteraction) return
+              const { data: userData } = await supabase
+                .from('user')
+                .select('name, email')
+                .eq('id', newInteraction.user_id)
+                .single()
 
-            const { data: userData } = await supabase
-              .from('user')
-              .select('name, email')
-              .eq('id', newInteraction.user_id)
-              .single()
+              setMessages((prev) =>
+                [
+                  ...prev,
+                  {
+                    id: newInteraction.id,
+                    content: newInteraction.content,
+                    created_at: newInteraction.created_at,
+                    user: userData || { name: null, email: null },
+                    type: 'interaction' as const,
+                  },
+                ].sort(
+                  (a, b) => new Date(a.created_at).getTime() - new Date(b.created_at).getTime()
+                )
+              )
+            }
+          )
+          .on(
+            'postgres_changes' as const,
+            {
+              event: 'INSERT',
+              schema: 'public',
+              table: 'ticket_history',
+              filter: `ticket_id=eq.${ticketId}`,
+            },
+            async (
+              payload: RealtimePostgresChangesPayload<{
+                old: null
+                new: TicketHistoryRow
+              }>
+            ) => {
+              const newHistory = payload.new as TicketHistoryRow
+              if (!newHistory) return
 
-            setMessages((prev) =>
-              [
-                ...prev,
-                {
-                  id: newInteraction.id,
-                  content: newInteraction.content,
-                  created_at: newInteraction.created_at,
-                  user: userData || { name: null, email: null },
-                  type: 'interaction' as const,
-                },
-              ].sort((a, b) => new Date(a.created_at).getTime() - new Date(b.created_at).getTime())
-            )
-          }
-        )
-        .on(
-          'postgres_changes' as const,
-          {
-            event: 'INSERT',
-            schema: 'public',
-            table: 'ticket_history',
-            filter: `ticket_id=eq.${ticketId}`,
-          },
-          async (
-            payload: RealtimePostgresChangesPayload<{
-              old: null
-              new: TicketHistoryRow
-            }>
-          ) => {
-            const newHistory = payload.new as TicketHistoryRow
-            if (!newHistory) return
+              const { data: userData } = await supabase
+                .from('user')
+                .select('name, email')
+                .eq('id', newHistory.changed_by)
+                .single()
 
-            const { data: userData } = await supabase
-              .from('user')
-              .select('name, email')
-              .eq('id', newHistory.changed_by)
-              .single()
-
-            setMessages((prev) =>
-              [
-                ...prev,
-                {
-                  id: newHistory.history_id,
-                  content: formatHistoryEntry({
+              setMessages((prev) =>
+                [
+                  ...prev,
+                  {
+                    id: newHistory.history_id,
+                    content: formatHistoryEntry({
+                      status_changed_to: newHistory.status_changed_to,
+                      prio_changed_to: newHistory.prio_changed_to,
+                    }),
+                    created_at: newHistory.created_at,
+                    user: userData || { name: null, email: null },
+                    type: 'history' as const,
                     status_changed_to: newHistory.status_changed_to,
                     prio_changed_to: newHistory.prio_changed_to,
-                  }),
-                  created_at: newHistory.created_at,
+                  },
+                ].sort(
+                  (a, b) => new Date(a.created_at).getTime() - new Date(b.created_at).getTime()
+                )
+              )
+            }
+          )
+
+        if (isStaff) {
+          ticketSubscription = ticketSubscription.on(
+            'postgres_changes' as const,
+            {
+              event: 'INSERT',
+              schema: 'public',
+              table: 'comment',
+              filter: `ticket_id=eq.${ticketId}`,
+            },
+            async (
+              payload: RealtimePostgresChangesPayload<{
+                old: null
+                new: CommentRow
+              }>
+            ) => {
+              const newComment = payload.new as CommentRow
+              if (!newComment) return
+
+              const { data: userData } = await supabase
+                .from('user')
+                .select('name, email')
+                .eq('id', newComment.user_id)
+                .single()
+
+              setComments((prev) => [
+                ...prev,
+                {
+                  message_id: newComment.message_id,
+                  content: newComment.content,
+                  created_at: newComment.created_at,
+                  ticket_id: newComment.ticket_id,
+                  user_id: newComment.user_id,
                   user: userData || { name: null, email: null },
-                  type: 'history' as const,
-                  status_changed_to: newHistory.status_changed_to,
-                  prio_changed_to: newHistory.prio_changed_to,
                 },
-              ].sort((a, b) => new Date(a.created_at).getTime() - new Date(b.created_at).getTime())
-            )
-          }
-        )
+              ])
+            }
+          )
+        }
 
-      if (isStaff) {
-        ticketSubscription = ticketSubscription.on(
-          'postgres_changes' as const,
-          {
-            event: 'INSERT',
-            schema: 'public',
-            table: 'comment',
-            filter: `ticket_id=eq.${ticketId}`,
-          },
-          async (
-            payload: RealtimePostgresChangesPayload<{
-              old: null
-              new: CommentRow
-            }>
-          ) => {
-            const newComment = payload.new as CommentRow
-            if (!newComment) return
-
-            const { data: userData } = await supabase
-              .from('user')
-              .select('name, email')
-              .eq('id', newComment.user_id)
-              .single()
-
-            setComments((prev) => [
-              ...prev,
-              {
-                message_id: newComment.message_id,
-                content: newComment.content,
-                created_at: newComment.created_at,
-                ticket_id: newComment.ticket_id,
-                user_id: newComment.user_id,
-                user: userData || { name: null, email: null },
-              },
-            ])
-          }
-        )
+        await ticketSubscription.subscribe()
+      } catch (error) {
+        console.error('Error setting up realtime subscriptions:', error)
       }
-
-      await ticketSubscription.subscribe()
     }
 
-    fetchTicket()
-    setupRealtimeSubscription()
+    // Only set up subscriptions if we're viewing a ticket
+    if (ticket) {
+      fetchTicket()
+      setupRealtimeSubscription()
+    }
 
     return () => {
       if (ticketSubscription) {
         supabase.removeChannel(ticketSubscription)
       }
     }
-  }, [ticketId, isStaff, supabase, fetchTicket])
+  }, [ticketId, isStaff, supabase, ticket, fetchTicket])
 
   const handleSendMessage = async (values: { content: string }) => {
     try {
@@ -597,7 +609,7 @@ export function TicketDetail({ ticketId, userRole, onBack }: TicketDetailProps) 
 
       if (error) throw error
 
-      message.success('Ticket closed')
+      message.success('Ticket closed successfully')
       onBack()
     } catch (error) {
       console.error('Error closing ticket:', error)

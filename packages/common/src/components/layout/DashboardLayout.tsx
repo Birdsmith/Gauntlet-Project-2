@@ -58,7 +58,15 @@ export const DashboardLayout = ({
         <Menu theme="dark" mode="inline" items={menuItems} />
       </Sider>
       <Layout>
-        <Header style={{ padding: 0, background: colorBgContainer }}>
+        <Header
+          style={{
+            padding: 0,
+            background: 'transparent',
+            position: 'absolute',
+            width: '100%',
+            zIndex: 1000,
+          }}
+        >
           <div
             style={{
               display: 'flex',
