@@ -63,7 +63,7 @@ export class ChatService {
         title: data.title,
         createdBy: data.created_by,
         status: data.status,
-        metadata: data.metadata as Json,
+        metadata: data.metadata as Record<string, any> | null,
         ticketId: data.ticket_id,
         createdAt: new Date(data.created_at),
         updatedAt: new Date(data.updated_at),
@@ -105,7 +105,7 @@ export class ChatService {
         sessionId: data.session_id,
         role: data.message_type,
         content: data.content,
-        metadata: data.metadata as Json,
+        metadata: (data.metadata as Record<string, any>) || {},
         createdAt: new Date(data.created_at),
       }
     } catch (error) {
@@ -133,7 +133,7 @@ export class ChatService {
         sessionId: msg.session_id,
         role: msg.message_type,
         content: msg.content,
-        metadata: msg.metadata as Json,
+        metadata: (msg.metadata as Record<string, any>) || {},
         createdAt: new Date(msg.created_at),
       }))
     } catch (error) {
@@ -161,7 +161,7 @@ export class ChatService {
         title: data.title,
         createdBy: data.created_by,
         status: data.status,
-        metadata: data.metadata as Json,
+        metadata: (data.metadata as Record<string, any>) || {},
         ticketId: data.ticket_id,
         createdAt: new Date(data.created_at),
         updatedAt: new Date(data.updated_at),
@@ -185,7 +185,7 @@ export class ChatService {
         .from('chat_sessions')
         .update({
           status: updates.status,
-          metadata: updates.metadata,
+          metadata: updates.metadata || {},
           title: updates.title,
           ticket_id: updates.ticketId,
         })
@@ -206,7 +206,7 @@ export class ChatService {
         title: data.title,
         createdBy: data.created_by,
         status: data.status,
-        metadata: data.metadata as Json,
+        metadata: (data.metadata as Record<string, any>) || {},
         ticketId: data.ticket_id,
         createdAt: new Date(data.created_at),
         updatedAt: new Date(data.updated_at),
@@ -268,7 +268,7 @@ export class ChatService {
         description: data.description || undefined,
         assignedTo: data.assigned_to || undefined,
         dueDate: data.due_date ? new Date(data.due_date) : undefined,
-        metadata: data.metadata as Json,
+        metadata: (data.metadata as Record<string, any>) || {},
         createdAt: new Date(data.created_at),
       }
     } catch (error) {

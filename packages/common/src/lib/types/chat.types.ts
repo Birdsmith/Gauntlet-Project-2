@@ -32,7 +32,7 @@ export interface ChatSession {
   id: string
   title: string
   createdBy: string
-  metadata?: Json
+  metadata: Record<string, any>
   status: ChatSessionStatus
   ticketId?: string | null
   createdAt: Date
@@ -49,6 +49,6 @@ export interface CRMAction {
   description?: string
   assignedTo?: string
   dueDate?: Date
-  metadata?: Json
+  metadata: Record<string, any>
   createdAt: Date
 }
