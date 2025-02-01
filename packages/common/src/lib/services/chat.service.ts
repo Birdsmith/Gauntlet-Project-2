@@ -161,7 +161,7 @@ export class ChatService {
         title: data.title,
         createdBy: data.created_by,
         status: data.status,
-        metadata: (data.metadata as Record<string, any>) || {},
+        metadata: data.metadata as Record<string, any> | null,
         ticketId: data.ticket_id,
         createdAt: new Date(data.created_at),
         updatedAt: new Date(data.updated_at),
@@ -185,7 +185,7 @@ export class ChatService {
         .from('chat_sessions')
         .update({
           status: updates.status,
-          metadata: updates.metadata || {},
+          metadata: updates.metadata ?? null,
           title: updates.title,
           ticket_id: updates.ticketId,
         })
@@ -206,7 +206,7 @@ export class ChatService {
         title: data.title,
         createdBy: data.created_by,
         status: data.status,
-        metadata: (data.metadata as Record<string, any>) || {},
+        metadata: data.metadata as Record<string, any> | null,
         ticketId: data.ticket_id,
         createdAt: new Date(data.created_at),
         updatedAt: new Date(data.updated_at),

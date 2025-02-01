@@ -32,7 +32,7 @@ export interface ChatSession {
   id: string
   title: string
   createdBy: string
-  metadata: Record<string, any>
+  metadata: Record<string, any> | null
   status: ChatSessionStatus
   ticketId?: string | null
   createdAt: Date
