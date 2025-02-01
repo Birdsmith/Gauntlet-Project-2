@@ -2,7 +2,6 @@ import { AgentExecutor, createOpenAIFunctionsAgent } from 'langchain/agents'
 import { ChatOpenAI } from '@langchain/openai'
 import { DynamicStructuredTool } from '@langchain/core/tools'
 import { ChatPromptTemplate, MessagesPlaceholder } from '@langchain/core/prompts'
-import { HumanMessage, AIMessage, SystemMessage } from '@langchain/core/messages'
 import { z } from 'zod'
 import { ConversationMemory } from './memory'
 import { VectorStore } from './vectorstore'
@@ -481,11 +480,11 @@ When handling requests:
 
             // Format the response to be more descriptive
             const formattedData = data.map((ticket) => ({
-              id: ticket.id,
-              title: ticket.title,
-              status: ticket.status,
+                id: ticket.id,
+                title: ticket.title,
+                status: ticket.status,
               description: ticket.description || 'No description provided',
-              createdAt: ticket.created_at,
+                createdAt: ticket.created_at,
               assignedTo: ticket.assignee?.name || 'Unassigned',
               createdBy: ticket.creator?.name || 'Unknown',
               priority: ticket.priority || 'Not set',
@@ -528,11 +527,11 @@ When handling requests:
           .strict(),
         func: async ({ ticketId, changes }) => {
           try {
-            Logger.info('Updating ticket', {
-              category: 'Action',
-              sessionId: this.sessionId,
-              metadata: { ticketId, changes },
-            })
+          Logger.info('Updating ticket', {
+            category: 'Action',
+            sessionId: this.sessionId,
+            metadata: { ticketId, changes },
+          })
 
             // Validate that the ticket exists first
             const { data: existingTicket, error: checkError } = await this.supabase
@@ -553,17 +552,17 @@ When handling requests:
               })
             }
 
-            const { data, error } = await this.supabase
-              .from('ticket')
-              .update(changes)
-              .eq('id', ticketId)
-              .select()
-              .single()
+          const { data, error } = await this.supabase
+            .from('ticket')
+            .update(changes)
+            .eq('id', ticketId)
+            .select()
+            .single()
 
-            if (error) {
-              Logger.error('Error updating ticket', {
-                category: 'Action',
-                sessionId: this.sessionId,
+          if (error) {
+            Logger.error('Error updating ticket', {
+              category: 'Action',
+              sessionId: this.sessionId,
                 metadata: {
                   error:
                     error instanceof PostgrestError
@@ -585,8 +584,8 @@ When handling requests:
             }
 
             Logger.info('Ticket updated successfully', {
-              category: 'Action',
-              sessionId: this.sessionId,
+            category: 'Action',
+            sessionId: this.sessionId,
               metadata: { ticketId, updatedData: data },
             })
 
@@ -625,9 +624,9 @@ When handling requests:
           .strict(),
         func: async ({ ticketId, content, isInternal }) => {
           try {
-            Logger.info('Adding comment to ticket', {
-              category: 'Action',
-              sessionId: this.sessionId,
+          Logger.info('Adding comment to ticket', {
+            category: 'Action',
+            sessionId: this.sessionId,
               metadata: { ticketId, contentLength: content.length, isInternal },
             })
 
@@ -664,21 +663,21 @@ When handling requests:
             }
 
             type CommentResult = { data: CommentResponse | null; error: PostgrestError | null }
-            const { data, error } = (await this.supabase
-              .from('comment')
-              .insert({
-                ticket_id: ticketId,
+          const { data, error } = (await this.supabase
+            .from('comment')
+            .insert({
+              ticket_id: ticketId,
                 content: content.trim(),
-                is_internal: isInternal || false,
+              is_internal: isInternal || false,
                 user_id: session.session.user.id,
-              })
-              .select()
-              .single()) as CommentResult
+            })
+            .select()
+            .single()) as CommentResult
 
-            if (error) {
-              Logger.error('Error adding comment', {
-                category: 'Action',
-                sessionId: this.sessionId,
+          if (error) {
+            Logger.error('Error adding comment', {
+              category: 'Action',
+              sessionId: this.sessionId,
                 metadata: {
                   error:
                     error instanceof PostgrestError
@@ -699,10 +698,10 @@ When handling requests:
             }
 
             Logger.info('Comment added successfully', {
-              category: 'Action',
-              sessionId: this.sessionId,
-              metadata: { ticketId, commentId: data?.id },
-            })
+            category: 'Action',
+            sessionId: this.sessionId,
+            metadata: { ticketId, commentId: data?.id },
+          })
 
             return JSON.stringify({
               success: true,
@@ -738,9 +737,9 @@ When handling requests:
           .strict(),
         func: async ({ ticketId, type, summary }) => {
           try {
-            Logger.info('Creating interaction', {
-              category: 'Action',
-              sessionId: this.sessionId,
+          Logger.info('Creating interaction', {
+            category: 'Action',
+            sessionId: this.sessionId,
               metadata: { ticketId, type, summaryLength: summary.length },
             })
 
@@ -764,12 +763,12 @@ When handling requests:
             }
 
             // Get the current user's session
-            const { data: session } = await this.supabase.auth.getSession()
-            if (!session?.session?.user?.id) {
-              Logger.error('User not authenticated', {
-                category: 'Action',
-                sessionId: this.sessionId,
-              })
+          const { data: session } = await this.supabase.auth.getSession()
+          if (!session?.session?.user?.id) {
+            Logger.error('User not authenticated', {
+              category: 'Action',
+              sessionId: this.sessionId,
+            })
               return JSON.stringify({
                 error: 'Failed to create interaction',
                 details: 'User not authenticated',
@@ -782,20 +781,20 @@ When handling requests:
             }
 
             const { data, error } = (await this.supabase
-              .from('interaction')
-              .insert({
-                ticket_id: ticketId,
-                interaction_type: type,
+            .from('interaction')
+            .insert({
+              ticket_id: ticketId,
+              interaction_type: type,
                 content: summary.trim(),
-                user_id: session.session.user.id,
-              })
-              .select()
+              user_id: session.session.user.id,
+            })
+            .select()
               .single()) as InteractionResult
 
-            if (error) {
-              Logger.error('Error creating interaction', {
-                category: 'Action',
-                sessionId: this.sessionId,
+          if (error) {
+            Logger.error('Error creating interaction', {
+              category: 'Action',
+              sessionId: this.sessionId,
                 metadata: {
                   error:
                     error instanceof PostgrestError
@@ -816,10 +815,10 @@ When handling requests:
             }
 
             Logger.info('Interaction created successfully', {
-              category: 'Action',
-              sessionId: this.sessionId,
-              metadata: { ticketId, interactionId: data?.id },
-            })
+            category: 'Action',
+            sessionId: this.sessionId,
+            metadata: { ticketId, interactionId: data?.id },
+          })
 
             return JSON.stringify({
               success: true,
@@ -1370,7 +1369,7 @@ When handling requests:
         sessionId: this.sessionId,
         metadata: { error: errorToJson(error) },
       })
-      return []
+    return []
     }
   }
 
@@ -1590,7 +1589,7 @@ When handling requests:
       const { data: session, error } = await this.supabase
         .from('chat_sessions')
         .insert({
-          metadata: this.metadata,
+            metadata: this.metadata,
           status: 'active' as const,
           title: 'New Chat Session',
           created_by: metadata.userId,

@@ -8,9 +8,10 @@ export type ChatSessionStatus = Database['public']['Enums']['chat_session_status
 export interface ChatMessage {
   id: string
   sessionId: string
-  role: ChatMessageRole
+  role: 'user' | 'assistant' | 'system' | 'function' | 'tool'
   content: string
-  metadata?: Json
+  type?: 'text' | 'error' | 'loading'
+  metadata: Record<string, any>
   createdAt: Date
 }
 

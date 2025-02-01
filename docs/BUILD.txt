@@ -1,138 +1,113 @@
-2025-01-25T03:27:53.095Z [INFO]: # Cloning repository: git@github.com:Birdsmith/Gauntlet-Project-2.git
-2025-01-25T03:27:54.106Z [INFO]: 
-2025-01-25T03:27:54.106Z [INFO]: Cloning into 'Gauntlet-Project-2'...
-2025-01-25T03:27:54.107Z [INFO]: # Checking for Git submodules at: /codebuild/output/src1790636647/src/Gauntlet-Project-2/.gitmodules
-2025-01-25T03:27:54.117Z [INFO]: # Retrieving environment cache...
-2025-01-25T03:27:54.157Z [WARNING]: ! Unable to write cache: {"code":"ERR_BAD_REQUEST","message":"Request failed with status code 404"})}
-2025-01-25T03:27:54.157Z [INFO]: ---- Setting Up SSM Secrets ----
-2025-01-25T03:27:54.158Z [INFO]: SSM params {"Path":"/amplify/d1bmedczlb4c64/main/","WithDecryption":true}
-2025-01-25T03:27:54.206Z [WARNING]: !Failed to set up process.env.secrets
-2025-01-25T03:27:54.907Z [INFO]: # No package override configuration found.
-2025-01-25T03:27:54.912Z [INFO]: # Retrieving cache...
-2025-01-25T03:27:54.950Z [INFO]: # Retrieved cache
-2025-01-25T03:27:59.709Z [INFO]: ## Starting Backend Build
+2025-02-01T07:19:49.846Z [INFO]: # Cloning repository: git@github.com:Birdsmith/Gauntlet-Project-2.git
+2025-02-01T07:19:50.955Z [INFO]: 
+2025-02-01T07:19:50.956Z [INFO]: Cloning into 'Gauntlet-Project-2'...
+2025-02-01T07:19:50.956Z [INFO]: # Switching to commit: 635447af5a066219cd5767f9c848d3666e130acb
+2025-02-01T07:19:50.978Z [INFO]: Note: switching to '635447af5a066219cd5767f9c848d3666e130acb'.
+                                 You are in 'detached HEAD' state. You can look around, make experimental
+                                 changes and commit them, and you can discard any commits you make in this
+                                 state without impacting any branches by switching back to a branch.
+                                 If you want to create a new branch to retain commits you create, you may
+                                 do so (now or later) by using -c with the switch command. Example:
+                                 git switch -c <new-branch-name>
+                                 Or undo this operation with:
+                                 git switch -
+                                 Turn off this advice by setting config variable advice.detachedHead to false
+                                 HEAD is now at 635447a Week 2 implementation: Added AI chat functionality, ticket management, and user profile features
+2025-02-01T07:19:50.990Z [INFO]: Successfully cleaned up Git credentials
+2025-02-01T07:19:50.990Z [INFO]: # Checking for Git submodules at: /codebuild/output/src3724602437/src/Gauntlet-Project-2/.gitmodules
+2025-02-01T07:19:50.998Z [INFO]: # Retrieving environment cache...
+2025-02-01T07:19:51.038Z [WARNING]: ! Unable to write cache: {"code":"ERR_BAD_REQUEST","message":"Request failed with status code 404"})}
+2025-02-01T07:19:51.038Z [INFO]: ---- Setting Up SSM Secrets ----
+2025-02-01T07:19:51.038Z [INFO]: SSM params {"Path":"/amplify/dc5lptlmhukoq/main/","WithDecryption":true}
+2025-02-01T07:19:51.090Z [WARNING]: !Failed to set up process.env.secrets
+2025-02-01T07:19:51.860Z [INFO]: # No package override configuration found.
+2025-02-01T07:19:51.865Z [INFO]: # Retrieving cache...
+2025-02-01T07:20:13.094Z [INFO]: # Extracting cache...
+2025-02-01T07:20:23.986Z [INFO]: # Extraction completed
+2025-02-01T07:20:24.146Z [INFO]: # Retrieved cache
+2025-02-01T07:20:28.447Z [INFO]: ## Starting Backend Build
                                  ## Checking for associated backend environment...
                                  ## No backend environment association found, continuing...
                                  ## Completed Backend Build
-2025-01-25T03:27:59.713Z [INFO]: {"backendDuration": 0}
+2025-02-01T07:20:28.452Z [INFO]: {"backendDuration": 0}
                                  ## Starting Frontend Build
                                  # Starting phase: preBuild
                                  # Executing command: cd ../..
-2025-01-25T03:27:59.755Z [INFO]: # Executing command: npm ci
-2025-01-25T03:28:19.141Z [WARNING]: npm WARN deprecated inflight@1.0.6: This module is not supported, and leaks memory. Do not use it. Check out lru-cache if you want a good and tested way to coalesce async requests by a key value, which is much more comprehensive and powerful.
-2025-01-25T03:28:19.378Z [WARNING]: npm WARN deprecated rimraf@3.0.2: Rimraf versions prior to v4 are no longer supported
-2025-01-25T03:28:19.582Z [WARNING]: npm WARN deprecated glob@7.2.3: Glob versions prior to v9 are no longer supported
-2025-01-25T03:28:20.190Z [WARNING]: npm WARN deprecated @supabase/auth-helpers-shared@0.7.0: This package is now deprecated - please use the @supabase/ssr package instead.
-2025-01-25T03:28:20.294Z [WARNING]: npm WARN deprecated
-2025-01-25T03:28:20.295Z [WARNING]: @humanwhocodes/object-schema@2.0.3: Use @eslint/object-schema instead
-2025-01-25T03:28:20.381Z [WARNING]: npm WARN deprecated @humanwhocodes/config-array@0.13.0: Use @eslint/config-array instead
-2025-01-25T03:28:20.751Z [WARNING]: npm WARN
-2025-01-25T03:28:20.752Z [WARNING]: deprecated @supabase/auth-helpers-nextjs@0.10.0: This package is now deprecated - please use the @supabase/ssr package instead.
-2025-01-25T03:28:22.893Z [WARNING]: npm WARN deprecated eslint@8.57.1: This version is no longer supported. Please see https://eslint.org/version-support for other options.
-2025-01-25T03:28:33.702Z [INFO]: added 486 packages, and audited 491 packages in 23s
-2025-01-25T03:28:33.707Z [INFO]: 148 packages are looking for funding
+2025-02-01T07:20:28.487Z [INFO]: # Executing command: npm ci
+2025-02-01T07:20:47.205Z [WARNING]: npm
+2025-02-01T07:20:47.210Z [WARNING]: WARN deprecated inflight@1.0.6: This module is not supported, and leaks memory. Do not use it. Check out lru-cache if you want a good and tested way to coalesce async requests by a key value, which is much more comprehensive and powerful.
+2025-02-01T07:20:47.421Z [WARNING]: npm WARN deprecated rimraf@3.0.2: Rimraf versions prior to v4 are no longer supported
+2025-02-01T07:20:47.662Z [WARNING]: npm WARN deprecated glob@7.2.3: Glob versions prior to v9 are no longer supported
+2025-02-01T07:20:48.949Z [WARNING]: npm WARN deprecated
+2025-02-01T07:20:48.949Z [WARNING]: @supabase/auth-helpers-shared@0.7.0: This package is now deprecated - please use the @supabase/ssr package instead.
+2025-02-01T07:20:49.457Z [WARNING]: npm WARN
+2025-02-01T07:20:49.457Z [WARNING]: deprecated @humanwhocodes/object-schema@2.0.3: Use @eslint/object-schema instead
+2025-02-01T07:20:49.480Z [WARNING]: npm
+2025-02-01T07:20:49.480Z [WARNING]: WARN deprecated @supabase/auth-helpers-react@0.5.0: This package is now deprecated - please use the @supabase/ssr package instead.
+2025-02-01T07:20:49.514Z [WARNING]: npm WARN
+2025-02-01T07:20:49.514Z [WARNING]: deprecated @supabase/auth-helpers-nextjs@0.10.0: This package is now deprecated - please use the @supabase/ssr package instead.
+2025-02-01T07:20:49.624Z [WARNING]: npm WARN deprecated
+2025-02-01T07:20:49.624Z [WARNING]: @humanwhocodes/config-array@0.13.0: Use @eslint/config-array instead
+2025-02-01T07:20:52.873Z [WARNING]: npm WARN
+2025-02-01T07:20:52.877Z [WARNING]: deprecated eslint@8.57.1: This version is no longer supported. Please see https://eslint.org/version-support for other options.
+2025-02-01T07:21:05.168Z [INFO]: added 664 packages, and audited 669 packages in 27s
+2025-02-01T07:21:05.173Z [INFO]: 177 packages are looking for funding
                                  run `npm fund` for details
-2025-01-25T03:28:33.757Z [INFO]: 3 vulnerabilities (2 low, 1 high)
+2025-02-01T07:21:05.215Z [INFO]: 5 vulnerabilities (2 low, 2 moderate, 1 high)
                                  To address all issues (including breaking changes), run:
                                  npm audit fix --force
                                  Run `npm audit` for details.
-2025-01-25T03:28:33.779Z [INFO]: # Executing command: npm run build:common
-2025-01-25T03:28:34.080Z [INFO]: > autocrm@0.1.0 build:common
+2025-02-01T07:21:05.239Z [INFO]: # Executing command: npm run build:common
+2025-02-01T07:21:05.512Z [INFO]: > autocrm@0.1.0 build:common
                                  > npm run build -w @autocrm/common
-2025-01-25T03:28:34.389Z [INFO]: > @autocrm/common@0.0.1 build
+2025-02-01T07:21:05.787Z [INFO]: > @autocrm/common@0.0.1 build
                                  > tsup
-2025-01-25T03:28:35.027Z [INFO]: CLI Building entry: src/index.ts, src/server/index.ts
-2025-01-25T03:28:35.028Z [INFO]: CLI Using tsconfig: tsconfig.json
-                                 CLI tsup v8.3.5
-                                 CLI Using tsup config: /codebuild/output/src1790636647/src/Gauntlet-Project-2/packages/common/tsup.config.ts
-2025-01-25T03:28:35.034Z [INFO]: CLI Target: es2017
-2025-01-25T03:28:35.036Z [INFO]: CLI Cleaning output folder
-2025-01-25T03:28:35.037Z [INFO]: ESM Build start
-2025-01-25T03:28:35.038Z [INFO]: CJS Build start
-2025-01-25T03:28:35.263Z [WARNING]: dist/server/index.mjs (1:0): Module level directives cause errors when bundled, "use server" in "dist/server/index.mjs" was ignored.
-2025-01-25T03:28:35.344Z [WARNING]: dist/server/index.js (1:0): Module level directives cause errors when bundled, "use server" in "dist/server/index.js" was ignored.
-2025-01-25T03:28:35.417Z [INFO]: ESM dist/chunk-HXTWBZ4J.mjs 2.10 KB
-2025-01-25T03:28:35.418Z [INFO]: ESM dist/server/index.mjs   38.89 KB
-                                 ESM dist/index.mjs          40.49 KB
-                                 ESM ⚡️ Build success in 380ms
-                                 CJS dist/index.js        42.31 KB
-                                 CJS dist/server/index.js 40.94 KB
-                                 CJS ⚡️ Build success in 381ms
-2025-01-25T03:28:35.455Z [INFO]: DTS Build start
-2025-01-25T03:28:40.845Z [INFO]: DTS ⚡️ Build success in 5391ms
-2025-01-25T03:28:40.851Z [INFO]: DTS dist/index.d.mts                   12.84 KB
-                                 DTS dist/server/index.d.mts            22.53 KB
-                                 DTS dist/database.types-BCnDY67R.d.mts 13.00 KB
-                                 DTS dist/index.d.ts                    12.84 KB
-                                 DTS dist/server/index.d.ts             22.53 KB
-                                 DTS dist/database.types-BCnDY67R.d.ts  13.00 KB
-2025-01-25T03:28:40.901Z [INFO]: # Executing command: cd packages/agent-dashboard
-2025-01-25T03:28:40.909Z [INFO]: # Executing command: npm ci
-2025-01-25T03:28:46.391Z [WARNING]: npm
-2025-01-25T03:28:46.397Z [WARNING]: WARN deprecated inflight@1.0.6: This module is not supported, and leaks memory. Do not use it. Check out lru-cache if you want a good and tested way to coalesce async requests by a key value, which is much more comprehensive and powerful.
-2025-01-25T03:28:46.511Z [WARNING]: npm
-2025-01-25T03:28:46.511Z [WARNING]: WARN deprecated @humanwhocodes/config-array@0.13.0: Use @eslint/config-array instead
-2025-01-25T03:28:46.518Z [WARNING]: npm
-2025-01-25T03:28:46.518Z [WARNING]: WARN deprecated rimraf@3.0.2: Rimraf versions prior to v4 are no longer supported
-2025-01-25T03:28:46.602Z [WARNING]: npm
-2025-01-25T03:28:46.603Z [WARNING]: WARN deprecated glob@7.2.3: Glob versions prior to v9 are no longer supported
-2025-01-25T03:28:46.611Z [WARNING]: npm
-2025-01-25T03:28:46.611Z [WARNING]: WARN deprecated @humanwhocodes/object-schema@2.0.3: Use @eslint/object-schema instead
-2025-01-25T03:28:49.813Z [WARNING]: npm
-2025-01-25T03:28:49.820Z [WARNING]: WARN deprecated eslint@8.57.1: This version is no longer supported. Please see https://eslint.org/version-support for other options.
-2025-01-25T03:28:57.321Z [INFO]: added 475 packages, and audited 478 packages in 16s
-2025-01-25T03:28:57.327Z [INFO]: 144 packages are looking for funding
-                                 run `npm fund` for details
-2025-01-25T03:28:57.382Z [INFO]: 3 vulnerabilities (2 low, 1 high)
-                                 To address all issues (including breaking changes), run:
-                                 npm audit fix --force
-                                 Run `npm audit` for details.
-2025-01-25T03:28:57.422Z [INFO]: # Completed phase: preBuild
-                                 # Starting phase: build
-                                 # Executing command: env | grep -e NEXT_PUBLIC_ >> .env.production
-2025-01-25T03:28:57.424Z [INFO]: # Executing command: npm run build
-2025-01-25T03:28:57.715Z [INFO]: > @autocrm/agent-dashboard@0.0.1 build
-                                 > next build
-2025-01-25T03:28:58.305Z [INFO]: ⚠ No build cache found. Please configure build caching for faster rebuilds. Read more: https://nextjs.org/docs/messages/no-cache
-2025-01-25T03:28:58.314Z [INFO]: Attention: Next.js now collects completely anonymous telemetry regarding usage.
-2025-01-25T03:28:58.315Z [INFO]: This information is used to shape Next.js' roadmap and prioritize features.
-                                 You can learn more, including how to opt-out if you'd not like to participate in this anonymous program, by visiting the following URL:
-                                 https://nextjs.org/telemetry
-2025-01-25T03:28:58.448Z [INFO]: ▲ Next.js 14.1.0
-2025-01-25T03:28:58.449Z [INFO]: - Environments: .env.production
-2025-01-25T03:28:58.467Z [INFO]: Creating an optimized production build ...
-2025-01-25T03:29:09.497Z [WARNING]: Failed to compile.
-2025-01-25T03:29:09.503Z [WARNING]: ./app/(dashboard)/layout.tsx
-                                    Module not found: Can't resolve '@supabase/auth-helpers-nextjs'
-                                    https://nextjs.org/docs/messages/module-not-found
-                                    ./components/tickets/TicketList.tsx
-                                    Module not found: Can't resolve '@supabase/auth-helpers-nextjs'
-                                    https://nextjs.org/docs/messages/module-not-found
-                                    Import trace for requested module:
-                                    ./app/(dashboard)/queue/page.tsx
-                                    ../common/src/lib/supabase/browser-client.ts
-                                    Module not found: Can't resolve '@supabase/auth-helpers-nextjs'
-                                    https://nextjs.org/docs/messages/module-not-found
-                                    Import trace for requested module:
-                                    ../common/src/index.ts
-                                    ./app/(auth)/register/page.tsx
-                                    ../common/src/lib/supabase/client.ts
-                                    Module not found: Can't resolve '@supabase/auth-helpers-nextjs'
-                                    https://nextjs.org/docs/messages/module-not-found
-                                    Import trace for requested module:
-                                    ../common/src/components/TicketDetail.tsx
-                                    ../common/src/index.ts
-                                    ./app/(auth)/register/page.tsx
-2025-01-25T03:29:09.512Z [WARNING]: > Build failed because of webpack errors
-2025-01-25T03:29:09.517Z [WARNING]: npm
-2025-01-25T03:29:09.517Z [WARNING]: ERR! Lifecycle script `build` failed with error:
-2025-01-25T03:29:09.517Z [WARNING]: npm ERR! Error: command failed
+2025-02-01T07:21:06.417Z [INFO]: CLI Building entry: src/index.ts, src/server/index.ts
+2025-02-01T07:21:06.418Z [INFO]: CLI Using tsconfig: tsconfig.json
+2025-02-01T07:21:06.418Z [INFO]: CLI tsup v8.3.5
+                                 CLI Using tsup config: /codebuild/output/src3724602437/src/Gauntlet-Project-2/packages/common/tsup.config.ts
+2025-02-01T07:21:06.424Z [INFO]: CLI Target: es2020
+2025-02-01T07:21:06.425Z [INFO]: CLI Cleaning output folder
+2025-02-01T07:21:06.426Z [INFO]: ESM Build start
+2025-02-01T07:21:06.427Z [INFO]: CJS Build start
+2025-02-01T07:21:06.557Z [WARNING]: dist/server/index.mjs (1:0): Module level directives cause errors when bundled, "use server" in "dist/server/index.mjs" was ignored.
+2025-02-01T07:21:06.821Z [WARNING]: "HumanMessage", "AIMessage" and "SystemMessage" are imported from external module "@langchain/core/messages" but never used in "dist/index.mjs".
+2025-02-01T07:21:07.076Z [WARNING]: "HumanMessage", "AIMessage" and "SystemMessage" are imported from external module "@langchain/core/messages" but never used in "dist/index.js".
+2025-02-01T07:21:07.218Z [INFO]: DTS Build start
+2025-02-01T07:21:07.218Z [WARNING]: dist/server/index.js (1:0): Module level directives cause errors when bundled, "use server" in "dist/server/index.js" was ignored.
+2025-02-01T07:21:07.367Z [INFO]: CJS dist/server/index.js     1.37 KB
+2025-02-01T07:21:07.367Z [INFO]: CJS dist/index.js            130.45 KB
+                                 CJS dist/server/index.js.map 3.46 KB
+                                 CJS dist/index.js.map        254.94 KB
+                                 CJS ⚡️ Build success in 941ms
+2025-02-01T07:21:07.367Z [INFO]: ESM dist/index.mjs            127.04 KB
+                                 ESM dist/server/index.mjs     1.25 KB
+                                 ESM dist/index.mjs.map        254.15 KB
+                                 ESM dist/server/index.mjs.map 3.37 KB
+                                 ESM ⚡️ Build success in 941ms
+2025-02-01T07:21:13.978Z [WARNING]: src/components/chat/ChatMessages.tsx(37,36): error TS2339: Property 'type' does not exist on type 'ChatMessage'.
+                                    src/components/chat/ChatMessages.tsx(41,27): error TS2339: Property 'type' does not exist on type 'ChatMessage'.
+                                    src/components/chat/ChatMessages.tsx(43,40): error TS2339: Property 'type' does not exist on type 'ChatMessage'.
+                                    src/components/chat/ChatMessages.tsx(52,40): error TS2339: Property 'type' does not exist on type 'ChatMessage'.
+                                    src/components/chat/ChatMessages.tsx(53,30): error TS2339: Property 'type' does not exist on type 'ChatMessage'.
+2025-02-01T07:21:13.982Z [WARNING]: Error: error occurred in dts build
+                                    at Worker.<anonymous> (/codebuild/output/src3724602437/src/Gauntlet-Project-2/node_modules/tsup/dist/index.js:1541:26)
+                                    at Worker.emit (node:events:517:28)
+                                    at MessagePort.<anonymous> (node:internal/worker:243:53)
+                                    at [nodejs.internal.kHybridDispatch] (node:internal/event_target:757:20)
+                                    at exports.emitMessage (node:internal/per_context/messageport:23:28)
+                                    DTS Build error
+2025-02-01T07:21:14.025Z [WARNING]: npm
+2025-02-01T07:21:14.025Z [WARNING]: ERR! Lifecycle script `build` failed with error:
+2025-02-01T07:21:14.025Z [WARNING]: npm ERR! Error: command failed
                                     npm
-2025-01-25T03:29:09.517Z [WARNING]: ERR!   in workspace: @autocrm/agent-dashboard@0.0.1
-2025-01-25T03:29:09.517Z [WARNING]: npm ERR!   at location: /codebuild/output/src1790636647/src/Gauntlet-Project-2/packages/agent-dashboard
-2025-01-25T03:29:09.588Z [ERROR]: !!! Build failed
-2025-01-25T03:29:09.588Z [INFO]: Please read more about Amplify Hosting's support for SSR frameworks to find if your build failure is related to an unsupported feature: https://docs.aws.amazon.com/amplify/latest/userguide/amplify-ssr-framework-support.html. You may also find this troubleshooting guide useful: https://docs.aws.amazon.com/amplify/latest/userguide/troubleshooting-ssr-deployment.html
-2025-01-25T03:29:09.588Z [ERROR]: !!! Error: Command failed with exit code 1
-2025-01-25T03:29:09.589Z [INFO]: # Starting environment caching...
-2025-01-25T03:29:09.590Z [INFO]: # Environment caching completed
+2025-02-01T07:21:14.025Z [WARNING]: 
+2025-02-01T07:21:14.025Z [WARNING]: ERR!   in workspace: @autocrm/common@0.0.1
+                                    npm ERR!   at location: /codebuild/output/src3724602437/src/Gauntlet-Project-2/packages/common
+2025-02-01T07:21:14.026Z [WARNING]: 
+2025-02-01T07:21:14.065Z [ERROR]: !!! Build failed
+2025-02-01T07:21:14.065Z [INFO]: Please read more about Amplify Hosting's support for SSR frameworks to find if your build failure is related to an unsupported feature: https://docs.aws.amazon.com/amplify/latest/userguide/amplify-ssr-framework-support.html. You may also find this troubleshooting guide useful: https://docs.aws.amazon.com/amplify/latest/userguide/troubleshooting-ssr-deployment.html
+2025-02-01T07:21:14.065Z [ERROR]: !!! Error: Command failed with exit code 1
+2025-02-01T07:21:14.065Z [INFO]: # Starting environment caching...
+2025-02-01T07:21:14.066Z [INFO]: # Environment caching completed
 
