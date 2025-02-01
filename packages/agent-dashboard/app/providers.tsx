@@ -3,7 +3,8 @@
 import { useState } from 'react'
 import { createCache, extractStyle, StyleProvider } from '@ant-design/cssinjs'
 import { useServerInsertedHTML } from 'next/navigation'
-import { ConfigProvider, theme } from 'antd'
+import { ConfigProvider, theme, App } from 'antd'
+import { AgentChat } from '../src/components/AgentChat'
 
 export default function AntdRegistry({
   children,
@@ -33,7 +34,10 @@ export default function AntdRegistry({
           },
         }}
       >
-        {children}
+        <App>
+          {children}
+          <AgentChat />
+        </App>
       </ConfigProvider>
     </StyleProvider>
   )

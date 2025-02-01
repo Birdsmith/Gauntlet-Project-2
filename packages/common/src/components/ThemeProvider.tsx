@@ -1,6 +1,6 @@
 'use client'
 
-import { ConfigProvider, theme } from 'antd'
+import { ConfigProvider, theme, App } from 'antd'
 import { AntdRegistry } from '@ant-design/nextjs-registry'
 
 export interface ThemeProviderProps {
@@ -18,7 +18,7 @@ export function ThemeProvider({ children }: ThemeProviderProps) {
           },
         }}
       >
-        {children}
+        <App>{children}</App>
       </ConfigProvider>
     </AntdRegistry>
   )

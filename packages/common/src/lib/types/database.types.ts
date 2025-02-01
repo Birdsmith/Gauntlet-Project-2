@@ -3,6 +3,85 @@ export type Json = string | number | boolean | null | { [key: string]: Json | un
 export type Database = {
   public: {
     Tables: {
+      chat_messages: {
+        Row: {
+          content: string
+          created_at: string
+          embedding: string | null
+          id: string
+          message_type: Database['public']['Enums']['chat_message_type']
+          metadata: Json | null
+          session_id: string
+        }
+        Insert: {
+          content: string
+          created_at?: string
+          embedding?: string | null
+          id?: string
+          message_type: Database['public']['Enums']['chat_message_type']
+          metadata?: Json | null
+          session_id: string
+        }
+        Update: {
+          content?: string
+          created_at?: string
+          embedding?: string | null
+          id?: string
+          message_type?: Database['public']['Enums']['chat_message_type']
+          metadata?: Json | null
+          session_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: 'chat_messages_session_id_fkey'
+            columns: ['session_id']
+            isOneToOne: false
+            referencedRelation: 'chat_sessions'
+            referencedColumns: ['id']
+          },
+        ]
+      }
+      chat_sessions: {
+        Row: {
+          created_at: string
+          created_by: string
+          id: string
+          metadata: Json | null
+          status: Database['public']['Enums']['chat_session_status']
+          ticket_id: string | null
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          created_by: string
+          id?: string
+          metadata?: Json | null
+          status?: Database['public']['Enums']['chat_session_status']
+          ticket_id?: string | null
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          created_by?: string
+          id?: string
+          metadata?: Json | null
+          status?: Database['public']['Enums']['chat_session_status']
+          ticket_id?: string | null
+          title?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: 'chat_sessions_ticket_id_fkey'
+            columns: ['ticket_id']
+            isOneToOne: false
+            referencedRelation: 'ticket'
+            referencedColumns: ['id']
+          },
+        ]
+      }
       comment: {
         Row: {
           content: string
@@ -41,6 +120,86 @@ export type Database = {
             referencedColumns: ['id']
           },
         ]
+      }
+      crm_actions: {
+        Row: {
+          action_type: Database['public']['Enums']['crm_action_type']
+          assigned_to: string | null
+          completed_at: string | null
+          created_at: string
+          created_by: string
+          description: string | null
+          due_date: string | null
+          id: string
+          metadata: Json | null
+          status: Database['public']['Enums']['crm_action_status']
+          ticket_id: string | null
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          action_type: Database['public']['Enums']['crm_action_type']
+          assigned_to?: string | null
+          completed_at?: string | null
+          created_at?: string
+          created_by: string
+          description?: string | null
+          due_date?: string | null
+          id?: string
+          metadata?: Json | null
+          status?: Database['public']['Enums']['crm_action_status']
+          ticket_id?: string | null
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          action_type?: Database['public']['Enums']['crm_action_type']
+          assigned_to?: string | null
+          completed_at?: string | null
+          created_at?: string
+          created_by?: string
+          description?: string | null
+          due_date?: string | null
+          id?: string
+          metadata?: Json | null
+          status?: Database['public']['Enums']['crm_action_status']
+          ticket_id?: string | null
+          title?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: 'crm_actions_ticket_id_fkey'
+            columns: ['ticket_id']
+            isOneToOne: false
+            referencedRelation: 'ticket'
+            referencedColumns: ['id']
+          },
+        ]
+      }
+      document_embeddings: {
+        Row: {
+          content: string
+          created_at: string
+          embedding: string | null
+          id: string
+          metadata: Json | null
+        }
+        Insert: {
+          content: string
+          created_at?: string
+          embedding?: string | null
+          id?: string
+          metadata?: Json | null
+        }
+        Update: {
+          content?: string
+          created_at?: string
+          embedding?: string | null
+          id?: string
+          metadata?: Json | null
+        }
+        Relationships: []
       }
       interaction: {
         Row: {
@@ -296,7 +455,9 @@ export type Database = {
       }
       user: {
         Row: {
+          avatar_url: string | null
           created_at: string
+          department: string | null
           email: string | null
           id: string
           name: string | null
@@ -305,7 +466,9 @@ export type Database = {
           updated_at: string
         }
         Insert: {
+          avatar_url?: string | null
           created_at?: string
+          department?: string | null
           email?: string | null
           id: string
           name?: string | null
@@ -314,7 +477,9 @@ export type Database = {
           updated_at?: string
         }
         Update: {
+          avatar_url?: string | null
           created_at?: string
+          department?: string | null
           email?: string | null
           id?: string
           name?: string | null
@@ -329,14 +494,217 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      binary_quantize:
+        | {
+            Args: {
+              '': string
+            }
+            Returns: unknown
+          }
+        | {
+            Args: {
+              '': unknown
+            }
+            Returns: unknown
+          }
       get_user_role: {
         Args: {
           user_id: string
         }
         Returns: Json
       }
+      halfvec_avg: {
+        Args: {
+          '': number[]
+        }
+        Returns: unknown
+      }
+      halfvec_out: {
+        Args: {
+          '': unknown
+        }
+        Returns: unknown
+      }
+      halfvec_send: {
+        Args: {
+          '': unknown
+        }
+        Returns: string
+      }
+      halfvec_typmod_in: {
+        Args: {
+          '': unknown[]
+        }
+        Returns: number
+      }
+      hnsw_bit_support: {
+        Args: {
+          '': unknown
+        }
+        Returns: unknown
+      }
+      hnsw_halfvec_support: {
+        Args: {
+          '': unknown
+        }
+        Returns: unknown
+      }
+      hnsw_sparsevec_support: {
+        Args: {
+          '': unknown
+        }
+        Returns: unknown
+      }
+      hnswhandler: {
+        Args: {
+          '': unknown
+        }
+        Returns: unknown
+      }
+      ivfflat_bit_support: {
+        Args: {
+          '': unknown
+        }
+        Returns: unknown
+      }
+      ivfflat_halfvec_support: {
+        Args: {
+          '': unknown
+        }
+        Returns: unknown
+      }
+      ivfflathandler: {
+        Args: {
+          '': unknown
+        }
+        Returns: unknown
+      }
+      l2_norm:
+        | {
+            Args: {
+              '': unknown
+            }
+            Returns: number
+          }
+        | {
+            Args: {
+              '': unknown
+            }
+            Returns: number
+          }
+      l2_normalize:
+        | {
+            Args: {
+              '': string
+            }
+            Returns: string
+          }
+        | {
+            Args: {
+              '': unknown
+            }
+            Returns: unknown
+          }
+        | {
+            Args: {
+              '': unknown
+            }
+            Returns: unknown
+          }
+      match_documents:
+        | {
+            Args: {
+              query_embedding: string
+              filter?: Json
+              match_count?: number
+            }
+            Returns: {
+              id: string
+              content: string
+              metadata: Json
+              similarity: number
+            }[]
+          }
+        | {
+            Args: {
+              query_embedding: string
+              match_threshold: number
+              match_count: number
+            }
+            Returns: {
+              id: string
+              content: string
+              metadata: Json
+              similarity: number
+            }[]
+          }
+      sparsevec_out: {
+        Args: {
+          '': unknown
+        }
+        Returns: unknown
+      }
+      sparsevec_send: {
+        Args: {
+          '': unknown
+        }
+        Returns: string
+      }
+      sparsevec_typmod_in: {
+        Args: {
+          '': unknown[]
+        }
+        Returns: number
+      }
+      vector_avg: {
+        Args: {
+          '': number[]
+        }
+        Returns: string
+      }
+      vector_dims:
+        | {
+            Args: {
+              '': string
+            }
+            Returns: number
+          }
+        | {
+            Args: {
+              '': unknown
+            }
+            Returns: number
+          }
+      vector_norm: {
+        Args: {
+          '': string
+        }
+        Returns: number
+      }
+      vector_out: {
+        Args: {
+          '': string
+        }
+        Returns: unknown
+      }
+      vector_send: {
+        Args: {
+          '': string
+        }
+        Returns: string
+      }
+      vector_typmod_in: {
+        Args: {
+          '': unknown[]
+        }
+        Returns: number
+      }
     }
     Enums: {
+      chat_message_type: 'user' | 'assistant' | 'system' | 'function' | 'tool'
+      chat_session_status: 'active' | 'archived' | 'deleted'
+      crm_action_status: 'pending' | 'completed' | 'cancelled'
+      crm_action_type: 'email' | 'call' | 'meeting' | 'note' | 'task'
       interactionType: 'email' | 'phone' | 'chat' | 'sms'
       ticket_priority: 'low' | 'medium' | 'high' | 'urgent'
       ticket_status: 'open' | 'in_progress' | 'resolved' | 'closed'

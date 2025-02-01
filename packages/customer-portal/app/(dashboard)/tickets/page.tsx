@@ -1,26 +1,28 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { Table, Button, Typography, Tag } from 'antd'
-import { createBrowserSupabaseClient, type Database } from '@autocrm/common'
+import { Table, Button, Typography, Tag, message } from 'antd'
 import { useRouter } from 'next/navigation'
+import { useSupabaseClient } from '@supabase/auth-helpers-react'
+import { PlusOutlined } from '@ant-design/icons'
 
 const { Title } = Typography
 
-type Tables = Database['public']['Tables']
-type TicketRow = Tables['ticket']['Row']
-
-interface Ticket
-  extends Omit<
-    TicketRow,
-    'description' | 'assigned_to' | 'created_by' | 'updated_at'
-  > {}
+type Ticket = {
+  id: string
+  title: string
+  description: string
+  status: 'open' | 'in_progress' | 'resolved' | 'closed'
+  priority: 'low' | 'medium' | 'high' | 'urgent'
+  created_at: string
+  created_by: string
+}
 
 export default function TicketsPage() {
   const [tickets, setTickets] = useState<Ticket[]>([])
   const [loading, setLoading] = useState(true)
   const router = useRouter()
-  const supabase = createBrowserSupabaseClient()
+  const supabase = useSupabaseClient()
 
   useEffect(() => {
     const fetchTickets = async () => {
@@ -40,6 +42,7 @@ export default function TicketsPage() {
         setTickets(data)
       } catch (error) {
         console.error('Error fetching tickets:', error)
+        message.error('Failed to load tickets')
       } finally {
         setLoading(false)
       }
@@ -61,36 +64,36 @@ export default function TicketsPage() {
       title: 'Status',
       dataIndex: 'status',
       key: 'status',
-      render: (status: Database['public']['Enums']['ticket_status'] | null) => {
+      render: (status: string) => {
         const colors = {
           open: 'blue',
           in_progress: 'orange',
           resolved: 'green',
           closed: 'red',
         }
-        return status ? (
-          <Tag color={colors[status]}>
+        return (
+          <Tag color={colors[status as keyof typeof colors]}>
             {status.replace('_', ' ').toUpperCase()}
           </Tag>
-        ) : null
+        )
       },
     },
     {
       title: 'Priority',
       dataIndex: 'priority',
       key: 'priority',
-      render: (
-        priority: Database['public']['Enums']['ticket_priority'] | null
-      ) => {
+      render: (priority: string) => {
         const colors = {
           low: 'green',
-          medium: 'orange',
-          high: 'red',
+          medium: 'blue',
+          high: 'orange',
           urgent: 'red',
         }
-        return priority ? (
-          <Tag color={colors[priority]}>{priority.toUpperCase()}</Tag>
-        ) : null
+        return (
+          <Tag color={colors[priority as keyof typeof colors]}>
+            {priority.toUpperCase()}
+          </Tag>
+        )
       },
     },
     {
@@ -112,8 +115,12 @@ export default function TicketsPage() {
         }}
       >
         <Title level={2}>My Tickets</Title>
-        <Button type="primary" onClick={() => router.push('/tickets/new')}>
-          Create New Ticket
+        <Button
+          type="primary"
+          icon={<PlusOutlined />}
+          onClick={() => router.push('/tickets/new')}
+        >
+          Create Ticket
         </Button>
       </div>
 

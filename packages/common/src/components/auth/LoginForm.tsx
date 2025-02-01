@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import { Form, Input, Button, Alert, message, Typography } from 'antd'
 import { UserOutlined, LockOutlined } from '@ant-design/icons'
-import { createBrowserSupabaseClient } from '../../lib/supabase/browser-client'
+import { supabase } from '../../lib/supabase/browser-client'
 
 const { Text } = Typography
 
@@ -27,7 +27,6 @@ export default function LoginForm({
 }: LoginFormProps) {
   const [error, setError] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
-  const supabase = createBrowserSupabaseClient()
 
   const handleLogin = async (values: LoginValues) => {
     setError(null)

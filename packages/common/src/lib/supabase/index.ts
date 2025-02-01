@@ -1,5 +1,5 @@
 // Client-side exports only
-export { createBrowserSupabaseClient } from './browser-client'
+export { supabase, createBrowserSupabaseClient, type SupabaseClient } from './browser-client'
 
 // Types
 export type { Database } from '../types/database.types'

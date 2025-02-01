@@ -35,4 +35,4 @@ a {
 :where(.css-dev-only-do-not-override-xxx).ant-app {
   background: var(--background-dark);
   color: var(--text-primary);
-} 
+}

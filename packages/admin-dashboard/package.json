@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "clean": "rm -rf node_modules && rm -rf .next"
+    "clean": "rimraf node_modules .next"
   },
   "dependencies": {
     "@autocrm/common": "^0.0.1",

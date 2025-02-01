@@ -10,13 +10,28 @@ console.log('Supabase Key exists:', !!supabaseKey)
 
 if (!supabaseUrl || !supabaseKey) {
   console.error('Missing Supabase environment variables')
+  throw new Error('Missing required Supabase environment variables')
 }
 
 export const createClient = () => {
   const fullUrl = supabaseUrl.startsWith('https://') ? supabaseUrl : `https://${supabaseUrl}`
   console.log('Using Supabase URL:', fullUrl)
 
-  return createClientComponentClient<Database>()
+  const client = createClientComponentClient<Database>({
+    supabaseUrl: fullUrl,
+    supabaseKey,
+  })
+
+  // Initialize session handling
+  client.auth.onAuthStateChange((event, session) => {
+    console.log('Auth state changed:', event, 'Session exists:', !!session)
+    if (event === 'SIGNED_OUT') {
+      // Clear any cached data
+      client.auth.signOut()
+    }
+  })
+
+  return client
 }
 
 export const supabase = createClient()

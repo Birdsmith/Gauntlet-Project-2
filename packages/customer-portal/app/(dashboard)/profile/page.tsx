@@ -1,51 +1,51 @@
 'use client'
 
-import { useEffect, useState } from 'react'
-import { Card, Typography, Form, Input, Button, message } from 'antd'
-import { createBrowserSupabaseClient } from '@autocrm/common'
+import { useEffect, useState, useCallback } from 'react'
+import { Card, Typography, Form, Input, Button } from 'antd'
+import { supabase } from '@autocrm/common'
 import type { Database } from '@autocrm/common'
+import { App } from 'antd'
 
 const { Title } = Typography
 
 type UserProfile = Database['public']['Tables']['user']['Row']
 
-export default function ProfilePage() {
+const ProfilePage = () => {
   const [profile, setProfile] = useState<UserProfile | null>(null)
   const [loading, setLoading] = useState(true)
   const [form] = Form.useForm()
-  const supabase = createBrowserSupabaseClient()
+  const { message } = App.useApp()
+
+  const getProfile = useCallback(async () => {
+    try {
+      const {
+        data: { user },
+      } = await supabase.auth.getUser()
+      if (!user) return
+
+      const { data, error } = await supabase
+        .from('user')
+        .select('*')
+        .eq('id', user.id)
+        .single()
+
+      if (error) {
+        message.error('Error loading profile')
+        return
+      }
+
+      if (data) {
+        setProfile(data)
+        form.setFieldsValue(data)
+      }
+    } catch (error) {
+      message.error('Error loading profile')
+    }
+  }, [form, message])
 
   useEffect(() => {
-    const fetchProfile = async () => {
-      try {
-        const {
-          data: { user },
-        } = await supabase.auth.getUser()
-        if (!user) return
-
-        const { data, error } = await supabase
-          .from('user')
-          .select('*')
-          .eq('id', user.id)
-          .single()
-
-        if (error) throw error
-
-        setProfile(data)
-        form.setFieldsValue({
-          name: data.name,
-          organization: data.organization,
-        })
-      } catch (error) {
-        console.error('Error fetching profile:', error)
-        message.error('Failed to load profile')
-      } finally {
-        setLoading(false)
-      }
-    }
-
-    fetchProfile()
-  }, [supabase, form])
+    getProfile()
+  }, [getProfile])
 
   const handleSubmit = async (values: Partial<UserProfile>) => {
     try {
@@ -115,3 +115,5 @@ export default function ProfilePage() {
     </div>
   )
 }
+
+export default ProfilePage

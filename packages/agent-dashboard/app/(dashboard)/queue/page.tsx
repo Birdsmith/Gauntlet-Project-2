@@ -1,173 +1,233 @@
 'use client'
 
-import { useState } from 'react'
-import { Typography, Button, Space, Dropdown, message } from 'antd'
-import { TicketList } from '@/components/tickets/TicketList'
-import { QueueFilters } from '@/components/tickets/QueueFilters'
-import { type Database } from '@autocrm/common'
+import { useEffect, useState, useCallback } from 'react'
+import { Table, Tag, Button, Typography, Card, Statistic, Row, Col } from 'antd'
+import { useRouter } from 'next/navigation'
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
-import type { MenuProps } from 'antd'
+import type { Database } from '@autocrm/common'
+import { RealtimeChannel } from '@supabase/supabase-js'
 
 const { Title } = Typography
 
-type TicketStatus = Database['public']['Enums']['ticket_status']
-type TicketPriority = Database['public']['Enums']['ticket_priority']
-type SortOption = 'newest' | 'oldest' | 'priority_desc' | 'priority_asc'
+type Ticket = Database['public']['Tables']['ticket']['Row']
 
 export default function QueuePage() {
-  const [selectedStatuses, setSelectedStatuses] = useState<TicketStatus[]>([])
-  const [selectedPriorities, setSelectedPriorities] = useState<
-    TicketPriority[]
-  >([])
-  const [sortBy, setSortBy] = useState<SortOption>('newest')
-  const [selectedTickets, setSelectedTickets] = useState<string[]>([])
+  const [unassignedTickets, setUnassignedTickets] = useState<Ticket[]>([])
+  const [highPriorityTickets, setHighPriorityTickets] = useState<Ticket[]>([])
+  const [loading, setLoading] = useState(true)
+  const router = useRouter()
   const supabase = createClientComponentClient<Database>()
+  const [channel, setChannel] = useState<RealtimeChannel | null>(null)
 
-  const handleBulkAction = async (action: string) => {
-    if (selectedTickets.length === 0) {
-      message.warning('Please select tickets to perform bulk actions')
-      return
-    }
-
+  const fetchTickets = useCallback(async () => {
     try {
-      switch (action) {
-        case 'resolve': {
-          const { error } = await supabase
-            .from('ticket')
-            .update({ status: 'resolved' })
-            .in('id', selectedTickets)
-          if (error) throw error
-          message.success(
-            `${selectedTickets.length} tickets marked as resolved`
-          )
-          break
-        }
-        case 'close': {
-          const { error } = await supabase
-            .from('ticket')
-            .update({ status: 'closed' })
-            .in('id', selectedTickets)
-          if (error) throw error
-          message.success(`${selectedTickets.length} tickets closed`)
-          break
-        }
-        case 'high_priority': {
-          const { error } = await supabase
-            .from('ticket')
-            .update({ priority: 'high' })
-            .in('id', selectedTickets)
-          if (error) throw error
-          message.success(
-            `${selectedTickets.length} tickets set to high priority`
-          )
-          break
-        }
-        case 'assign_to_me': {
-          const {
-            data: { user },
-          } = await supabase.auth.getUser()
-          if (!user) {
-            message.error('You must be logged in to assign tickets')
-            return
-          }
-          const { error } = await supabase
-            .from('ticket')
-            .update({ assigned_to: user.id })
-            .in('id', selectedTickets)
-          if (error) throw error
-          message.success(`${selectedTickets.length} tickets assigned to you`)
-          break
-        }
-      }
-      // Clear selection after successful action
-      setSelectedTickets([])
+      setLoading(true)
+      const [unassignedResponse, highPriorityResponse] = await Promise.all([
+        // Fetch unassigned tickets
+        supabase
+          .from('ticket')
+          .select('*')
+          .is('assigned_to', null)
+          .eq('status', 'open')
+          .order('created_at', { ascending: false }),
+        // Fetch high priority tickets
+        supabase
+          .from('ticket')
+          .select('*')
+          .in('priority', ['high', 'urgent'])
+          .in('status', ['open', 'in_progress'])
+          .order('created_at', { ascending: false }),
+      ])
+
+      if (unassignedResponse.error) throw unassignedResponse.error
+      if (highPriorityResponse.error) throw highPriorityResponse.error
+
+      setUnassignedTickets(unassignedResponse.data || [])
+      setHighPriorityTickets(highPriorityResponse.data || [])
     } catch (error) {
-      console.error('Error performing bulk action:', error)
-      message.error('Failed to perform bulk action')
+      console.error('Error fetching tickets:', error)
+    } finally {
+      setLoading(false)
+    }
+  }, [supabase])
+
+  const setupRealtimeSubscription = useCallback(() => {
+    return supabase
+      .channel('queue')
+      .on(
+        'postgres_changes',
+        {
+          event: '*',
+          schema: 'public',
+          table: 'ticket',
+        },
+        () => {
+          fetchTickets()
+        }
+      )
+      .subscribe()
+  }, [supabase, fetchTickets])
+
+  useEffect(() => {
+    fetchTickets()
+    const newChannel = setupRealtimeSubscription()
+    setChannel(newChannel)
+
+    return () => {
+      if (channel) {
+        supabase.removeChannel(channel)
+      }
+    }
+  }, [supabase, channel, fetchTickets, setupRealtimeSubscription])
+
+  const handleAssignToMe = async (ticketId: string) => {
+    try {
+      const {
+        data: { user },
+      } = await supabase.auth.getUser()
+      if (!user) return
+
+      const { error } = await supabase
+        .from('ticket')
+        .update({ assigned_to: user.id, status: 'in_progress' })
+        .eq('id', ticketId)
+
+      if (error) throw error
+      router.push(`/tickets/${ticketId}`)
+    } catch (error) {
+      console.error('Error assigning ticket:', error)
     }
   }
 
-  const bulkActionItems: MenuProps['items'] = [
+  const getStatusColor = (status: string) => {
+    switch (status) {
+      case 'open':
+        return 'blue'
+      case 'in_progress':
+        return 'orange'
+      case 'resolved':
+        return 'green'
+      case 'closed':
+        return 'red'
+      default:
+        return 'default'
+    }
+  }
+
+  const getPriorityColor = (priority: string) => {
+    switch (priority) {
+      case 'low':
+        return 'green'
+      case 'medium':
+        return 'blue'
+      case 'high':
+        return 'orange'
+      case 'urgent':
+        return 'red'
+      default:
+        return 'default'
+    }
+  }
+
+  const columns = [
     {
+      title: 'ID',
+      dataIndex: 'id',
+      key: 'id',
+      width: 100,
+      render: (text: string) => text.slice(0, 8),
+    },
+    {
+      title: 'Title',
+      dataIndex: 'title',
+      key: 'title',
+      render: (text: string, record: Ticket) => (
+        <a onClick={() => router.push(`/tickets/${record.id}`)}>{text}</a>
+      ),
+    },
+    {
+      title: 'Status',
+      dataIndex: 'status',
       key: 'status',
-      label: 'Status',
-      children: [
-        {
-          key: 'resolve',
-          label: 'Mark as Resolved',
-          onClick: () => handleBulkAction('resolve'),
-        },
-        {
-          key: 'close',
-          label: 'Close Tickets',
-          onClick: () => handleBulkAction('close'),
-        },
-      ],
+      width: 120,
+      render: (status: string) => (
+        <Tag color={getStatusColor(status)}>
+          {status.replace('_', ' ').toUpperCase()}
+        </Tag>
+      ),
     },
     {
+      title: 'Priority',
+      dataIndex: 'priority',
       key: 'priority',
-      label: 'Priority',
-      children: [
-        {
-          key: 'high_priority',
-          label: 'Set to High Priority',
-          onClick: () => handleBulkAction('high_priority'),
-        },
-      ],
+      width: 120,
+      render: (priority: string) => (
+        <Tag color={getPriorityColor(priority)}>{priority.toUpperCase()}</Tag>
+      ),
     },
     {
-      key: 'assignment',
-      label: 'Assignment',
-      children: [
-        {
-          key: 'assign_to_me',
-          label: 'Assign to Me',
-          onClick: () => handleBulkAction('assign_to_me'),
-        },
-      ],
+      title: 'Created',
+      dataIndex: 'created_at',
+      key: 'created_at',
+      width: 150,
+      render: (date: string) => new Date(date).toLocaleString(),
+    },
+    {
+      title: 'Action',
+      key: 'action',
+      width: 120,
+      render: (_: unknown, record: Ticket) => (
+        <Button type="primary" onClick={() => handleAssignToMe(record.id)}>
+          Assign to Me
+        </Button>
+      ),
     },
   ]
 
   return (
-    <div>
-      <div style={{ marginBottom: 24 }}>
-        <Space style={{ width: '100%', justifyContent: 'space-between' }}>
-          <Title level={2} style={{ margin: 0 }}>
-            Ticket Queue
-          </Title>
-          <Space>
-            {selectedTickets.length > 0 && (
-              <span>{selectedTickets.length} tickets selected</span>
-            )}
-            <Dropdown menu={{ items: bulkActionItems }} trigger={['click']}>
-              <Button type="primary">Bulk Actions</Button>
-            </Dropdown>
-          </Space>
-        </Space>
-      </div>
+    <div style={{ padding: '24px' }}>
+      <Row gutter={[16, 24]}>
+        <Col span={8}>
+          <Card>
+            <Statistic
+              title="Unassigned Tickets"
+              value={unassignedTickets.length}
+              valueStyle={{ color: '#1890ff' }}
+            />
+          </Card>
+        </Col>
+        <Col span={8}>
+          <Card>
+            <Statistic
+              title="High Priority Tickets"
+              value={highPriorityTickets.length}
+              valueStyle={{ color: '#ff4d4f' }}
+            />
+          </Card>
+        </Col>
+      </Row>
 
-      <div style={{ marginBottom: 24 }}>
-        <QueueFilters
-          onStatusChange={values =>
-            setSelectedStatuses(values as TicketStatus[])
-          }
-          onPriorityChange={values =>
-            setSelectedPriorities(values as TicketPriority[])
-          }
-          onSortChange={setSortBy}
-          selectedStatuses={selectedStatuses}
-          selectedPriorities={selectedPriorities}
-          sortBy={sortBy}
+      <div style={{ marginTop: 24 }}>
+        <Title level={3}>Unassigned Tickets</Title>
+        <Table
+          columns={columns}
+          dataSource={unassignedTickets}
+          loading={loading}
+          rowKey="id"
+          pagination={false}
         />
       </div>
 
-      <TicketList
-        selectedStatuses={selectedStatuses}
-        selectedPriorities={selectedPriorities}
-        sortBy={sortBy}
-        selectedTickets={selectedTickets}
-        onSelectedTicketsChange={setSelectedTickets}
-      />
+      <div style={{ marginTop: 24 }}>
+        <Title level={3}>High Priority Tickets</Title>
+        <Table
+          columns={columns}
+          dataSource={highPriorityTickets}
+          loading={loading}
+          rowKey="id"
+          pagination={false}
+        />
+      </div>
     </div>
   )
 }

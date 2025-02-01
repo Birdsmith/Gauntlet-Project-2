@@ -35,7 +35,6 @@ type TicketStatus = Database['public']['Enums']['ticket_status']
 
 type BaseComment = Tables['comment']['Row']
 type BaseInteraction = Tables['interaction']['Row']
-type BaseTicketHistory = Tables['ticket_history']['Row']
 type BaseUser = Tables['user']['Row']
 
 interface ExtendedComment extends BaseComment {
@@ -44,7 +43,6 @@ interface ExtendedComment extends BaseComment {
 
 type TicketRow = Tables['ticket']['Row']
 type InteractionRow = Tables['interaction']['Row']
-type TicketHistoryRow = Tables['ticket_history']['Row']
 type CommentRow = Tables['comment']['Row']
 
 type TicketDetails = Omit<TicketRow, 'description'> & {
@@ -251,7 +249,14 @@ export function TicketDetail({ ticketId, userRole, onBack }: TicketDetailProps) 
 
       const history =
         historyData?.map(
-          (hist: BaseTicketHistory & { user: Pick<BaseUser, 'name' | 'email'> | null }) => ({
+          (hist: {
+            history_id: string
+            created_at: string
+            status_changed_to?: TicketStatus | null
+            prio_changed_to?: TicketPriority | null
+            changed_by: string
+            user: Pick<BaseUser, 'name' | 'email'> | null
+          }) => ({
             id: hist.history_id,
             content: formatHistoryEntry({
               status_changed_to: hist.status_changed_to,

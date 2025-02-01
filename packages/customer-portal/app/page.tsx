@@ -2,11 +2,10 @@
 
 import { useEffect } from 'react'
 import { useRouter } from 'next/navigation'
-import { createBrowserSupabaseClient } from '@autocrm/common'
+import { supabase } from '@autocrm/common'
 
 export default function Home() {
   const router = useRouter()
-  const supabase = createBrowserSupabaseClient()
 
   useEffect(() => {
     const checkAuth = async () => {
@@ -21,7 +20,7 @@ export default function Home() {
     }
 
     checkAuth()
-  }, [router, supabase])
+  }, [router])
 
   // Return null since we're redirecting anyway
   return null
